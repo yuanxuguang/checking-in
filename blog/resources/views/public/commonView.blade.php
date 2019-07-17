@@ -47,12 +47,22 @@
       <div id="side-nav">
         <ul id="nav">
             <li>
+                <a _href="/employerList">
+                    <i class="iconfont">&#xe6a7;</i>
+                    <cite>雇主管理</cite>
+
+                </a>
+                <a _href="member-list.html">
+                    <i class="iconfont">&#xe6a7;</i>
+                    <cite>会员列表2(静态表格)</cite>
+
+                </a>
                 <a href="javascript:;">
                     <i class="iconfont">&#xe6b8;</i>
                     <cite>会员管理</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
                 </a>
-                <ul class="sub-menu">
+                <ul >
                     <li date-refresh="1">
                         <a _href="member-list.html">
                             <i class="iconfont">&#xe6a7;</i>

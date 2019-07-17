@@ -18,6 +18,9 @@
         #WidgetLogoPanel{
             display:none !important;
         }
+        .layui-layer-iframe{
+            z-index: 19891019; width: 600px; height: 400px; top: 1px !important; left: 510px;
+        }
 
     </style>
     <script type="text/javascript" src="c/js/xadmin.js"></script>
