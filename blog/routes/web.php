@@ -28,7 +28,7 @@ Route::get('/employerList','EmployerController@list');//雇主列表
 Route::get('/employerAdd','EmployerController@add'); //添加视图
 Route::post('/getBigEmployer','EmployerController@getBigEmployer'); //添加外判雇主时获取主雇主数据
 Route::post('/employerInsert','EmployerController@insert'); //插入数据
-Route::get('/employerEdit','EmployerController@edit'); //修改视图
+Route::get('/employerEdit/{id}','EmployerController@edit'); //修改视图
 Route::post('/employerEditInsert','EmployerController@editInsert'); //修改插入数据
 
 

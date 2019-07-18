@@ -22,9 +22,10 @@
                     <span class="x-red">*</span>选择主雇主
                 </label>
                 <div class="layui-input-inline">
-                    <select id="leader" name="leader" class="valid">
-                        <option value="0"></option>
-
+                    <select id="leaders" name="leader" class="valid">
+                        @foreach($bigEmployers as $v)
+                        <option value="{{$v->id}}">{{$v->name}}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -90,6 +91,7 @@
       </form>
     </div>
     <script>
+
         layui.use(['form','layer'], function(){
             $ = layui.jquery;
           var form = layui.form
@@ -124,31 +126,19 @@
                 }
             }
           });
-          $(".employer_type").hide();
-          window.onload = function(){
+
+
+            $(".employer_type").hide();
+          // window.onload = function(){
 
                 $('#zhu').next().on('click', function () {
                     $(".employer_type").hide();
                 });
                 $('#fu').next().on('click', function () {
-                    $.post({
-                        url:"/getBigEmployer",
-                        dataType:'json',
-                        success:function(res){
 
-
-                            $('#leader').append("<option value='555'>555</option>");
-
-                            // for(var i= 0;i<res.length;i++){
-                            //     // alert(res[i]['id']);
-                            //     obj.options.add(new Option(res[i]['name'],res[i]['id']));
-                            // }
-
-                        }
-                    })
-                    $(".employer_type").show();
-                })
-            }
+                $(".employer_type").show();
+                });
+            // };
 
           //监听提交
           form.on('submit(add)', function(data){
@@ -164,6 +154,7 @@
                               // //关闭当前frame
                               // parent.layer.close(index);
                               //关闭当前frame
+                              x_admin_father_reload();
                               x_admin_close();
                           });
                       }else{
