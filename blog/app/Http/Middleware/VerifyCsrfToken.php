@@ -14,6 +14,9 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         //
         "/employerInsert",
-        "/getBigEmployer"
+        "/getBigEmployer",
+        "/editInsert",
+        "/setEmployerStatus",
+        "/contractAdd"
     ];
 }

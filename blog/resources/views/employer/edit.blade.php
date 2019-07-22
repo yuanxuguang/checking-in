@@ -6,12 +6,12 @@
   <body>
     <div class="x-body">
         <form class="layui-form" id="data">
+            <input type="text" name="id" value="{{$list->id}}" style="display:none;">
             <div class="layui-form-item">
                 <label for="L_email" class="layui-form-label">
                     <span class="x-red">*</span>雇主类型
                 </label>
                 <div class="layui-input-inline">
-
                     <input type="radio" name="type" lay-skin="primary" title="主雇主" value="0" id="zhu" @if(!$list->type) checked="checked" @endif>
                     <input type="radio" name="type" lay-skin="primary" title="外判雇主" value="1" id="fu"  @if($list->type) checked="checked" @endif>
                 </div>
@@ -129,17 +129,18 @@
         //监听提交
         form.on('submit(add)', function(data){
             $.post({
-                url:"/employerInsert",
+                url:"/editInsert",
                 data:$("#data").serialize(),
                 dataType:'json',
                 success:function(res){
                     if(res.info === 1){
-                        layer.alert("增加成功", {icon: 6},function () {
+                        layer.alert("修改成功", {icon: 6},function () {
                             // // 获得frame索引
                             // var index = parent.layer.getFrameIndex(window.name);
                             // //关闭当前frame
                             // parent.layer.close(index);
                             //关闭当前frame
+                            x_admin_father_reload();
                             x_admin_close();
                         });
                     }else{
@@ -149,7 +150,7 @@
                         //         alert(res.error['phone']);
                         //         break;
                         // }
-                        layer.alert("添加失败", {icon: 5},function () {
+                        layer.alert("修改失败", {icon: 5},function () {
                             // // 获得frame索引
                             // var index = parent.layer.getFrameIndex(window.name);
                             // //关闭当前frame

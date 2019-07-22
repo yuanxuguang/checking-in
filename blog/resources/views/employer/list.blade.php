@@ -14,25 +14,32 @@
     </div>
     <div class="x-body">
       <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so">
-          <input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">
-          <input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
-          <input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
+        <form class="layui-form layui-col-md12 x-so" action="/employerList">
+          {{--<input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">--}}
+          {{--<input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">--}}
+          <input type="text" name="condition"  placeholder="用户名，手机号" autocomplete="off" class="layui-input">
+          <div class="layui-input-inline">
+          <select name="employerType" id="">
+            <option value="0">雇主类型</option>
+            <option value="1">主雇主</option>
+            <option value="2">外判雇主</option>
+          </select>
+          </div>
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
       <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
         <button class="layui-btn" onclick="x_admin_show('添加用户','/employerAdd',600,500)"><i class="layui-icon"></i>添加</button>
-        <span class="x-right" style="line-height:40px">共有数据：88 条</span>
+        {{--<span class="x-right" style="line-height:40px">共有数据：88 条</span>--}}
       </xblock>
       <table class="layui-table x-admin">
         <thead>
           <tr>
-            <th>
-              <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
-            </th>
-            <th>ID</th>
+            {{--<th>--}}
+              {{--<div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>--}}
+            {{--</th>--}}
+
             <th>雇主姓名</th>
             <th>手机号</th>
             <th>公司名称</th>
@@ -45,22 +52,34 @@
         <tbody>
           @foreach($lists as $list)
           <tr>
-            <td>
-              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
-            </td>
-            <td>1</td>
+            {{--<td>--}}
+              {{--<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>--}}
+            {{--</td>--}}
+
             <td>{{$list->name}}</td>
             <td>{{$list->phone}}</td>
             <td>{{$list->company_name}}</td>
-            <td>@if($list->type == 0)主顾主@else外判雇主@endif</td>
-            <td> @if($list->boss) {{$list->bossName}} @else '无'@endif</td>
+            <td>@if($list->type == 1)主顾主@else外判雇主@endif</td>
+            <td>{{$list->boss_name}}</td>
             <td>{{$list->company_num}}</td>
+
             <td class="td-status">
-              <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span></td>
+              @if($list->status)
+                <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
+              @else
+                <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled" >已停用</span>
+              @endif
+            </td>
             <td class="td-manage">
-              <a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">
+              @if($list->status)
+              <a onclick="member_stop(this,{{$list->id}})" href="javascript:;"  title="停用">
                 <i class="layui-icon">&#xe601;</i>
               </a>
+              @else
+                <a onclick="member_stop(this,{{$list->id}})" href="javascript:;"  title="启用">
+                  <i class="layui-icon">&#xe601;</i>
+                </a>
+              @endif
               <a title="编辑"  onclick="x_admin_show('编辑','/employerEdit/{{$list->id}}',600,500)" href="javascript:;">
                 <i class="layui-icon">&#xe642;</i>
               </a>
@@ -96,26 +115,56 @@
 
        /*用户-停用*/
       function member_stop(obj,id){
-          layer.confirm('确认要停用吗？',function(index){
 
               if($(obj).attr('title')=='启用'){
+                layer.confirm('确认要启用吗？',function(index) {
+                    //发异步把用户状态进行更改
+                    $(obj).attr('title', '启用')
+                    $.post({
+                      url: "/setEmployerStatus",
+                      data: {'status': 1, 'id': id},
+                      dataType: 'json',
+                      success: function (res) {
+                        //发异步把用户状态进行更改
+                        $(obj).find('i').html('&#xe601;');
 
-                //发异步把用户状态进行更改
-                $(obj).attr('title','停用')
-                $(obj).find('i').html('&#xe62f;');
-
-                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                layer.msg('已停用!',{icon: 5,time:1000});
+                        $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已启用');
+                        layer.msg('已启用!', {icon: 6, time: 1000});
+                        window.location.reload();
+                      }
+                    });
+                });
+                // $(obj).find('i').html('&#xe62f;');
+                //
+                // $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+                // layer.msg('已停用!',{icon: 5,time:1000});
 
               }else{
-                $(obj).attr('title','启用')
-                $(obj).find('i').html('&#xe601;');
+                layer.confirm('确认要停用吗？',function(index) {
+                //发异步把用户状态进行更改
+                $(obj).attr('title','停用')
+                $.post({
+                  url:"/setEmployerStatus",
+                  data:{'status':0,'id':id },
+                  dataType:'json',
+                  success:function(res){
+                    //发异步把用户状态进行更改
+                    $(obj).find('i').html('&#xe62f;');
+                    window.location.reload();
+                    $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+                    layer.msg('已停用!', {icon: 5, time: 1000});
+                  }
+                });
 
-                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-                layer.msg('已启用!',{icon: 5,time:1000});
+                // $(obj).attr('title','启用')
+                // $(obj).find('i').html('&#xe601;');
+                //
+                // $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+                // layer.msg('已启用!',{icon: 5,time:1000});
               }
+              )};
               
-          });
+
       }
 
       /*用户-删除*/
