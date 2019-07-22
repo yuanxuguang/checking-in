@@ -68,7 +68,7 @@ class EmployerController extends Controller
     }
 
     public function add(){
-        $bigEmployers = DB::table('employer')->where('type','0')->select('id','name')->get();
+        $bigEmployers = DB::table('employer')->where('type','1')->select('id','name')->get();
         return view('employer.add',compact('bigEmployers'));
     }
 

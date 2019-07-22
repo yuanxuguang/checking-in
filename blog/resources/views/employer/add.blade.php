@@ -10,8 +10,8 @@
                     <span class="x-red">*</span>雇主类型
                 </label>
                 <div class="layui-input-inline">
-                    <input type="radio" name="type" lay-skin="primary" title="主雇主" value="0" checked="" id="zhu">
-                    <input type="radio" name="type" lay-skin="primary" title="外判雇主" value="1" id="fu" >
+                    <input type="radio" name="type" lay-skin="primary" title="主雇主" value="1" checked="" id="zhu">
+                    <input type="radio" name="type" lay-skin="primary" title="外判雇主" value="2" id="fu" >
                 </div>
                 <div class="layui-form-mid layui-word-aux">
                     <span class="x-red"></span>
@@ -23,6 +23,7 @@
                 </label>
                 <div class="layui-input-inline">
                     <select id="leaders" name="leader" class="valid">
+                        <option value="0">请选择</option>
                         @foreach($bigEmployers as $v)
                         <option value="{{$v->id}}">{{$v->name}}</option>
                         @endforeach

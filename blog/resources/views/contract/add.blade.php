@@ -42,6 +42,9 @@
                 <div class="layui-input-inline">
                     <select id="out_employer" name="out_employer" class="valid">
                         <option value="0">请选择</option>
+                        @foreach($out_employers as $out_employer)
+                            <option value="{{$out_employer->id}}">{{$out_employer->name}}</option>
+                        @endforeach
                     </select>
                 </div>
           </div>
@@ -52,6 +55,9 @@
                 <div class="layui-input-inline">
                     <select id="leaders" name="up_contract" class="valid">
                         <option value="0">请选择</option>
+                        @foreach($up_contracts as $up_contract)
+                            <option value="{{$up_contract->id}}">{{$up_contract->c_name}}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
