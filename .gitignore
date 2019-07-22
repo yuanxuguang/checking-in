@@ -1,1 +1,3 @@
 /.idea
+remote = origin2
+merge = refs/heads/master	
