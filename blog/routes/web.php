@@ -18,7 +18,13 @@ Route::get('/map',function(){ return view('contract.map'); }); //地图
 //登陆视图
 Route::get("/loginView","CommonController@loginView");
 //登陆操作
-Route::get('/doLogin','CommonController@doLogin');
+Route::post('/doLogin','CommonController@doLogin');
+//退出登陆
+Route::get('/loginOut','CommonController@loginOut');
+
+//登陆中间件组
+Route::group(['middleware' => ['login']],function(){
+
 //公共视图
 Route::get('/commonView','CommonController@commonView');
 //首页视图
@@ -41,3 +47,5 @@ Route::post('/contractInsert','ContractController@insert'); //合约列表
 Route::get('/contractEdit','ContractController@edit'); //合约列表
 Route::post('/contractEditInsert','ContractController@editInsert'); //合约列表
 Route::get('/contractDelete','ContractController@delete'); //合约列表
+
+});

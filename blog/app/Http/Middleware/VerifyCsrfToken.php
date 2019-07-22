@@ -17,6 +17,7 @@ class VerifyCsrfToken extends Middleware
         "/getBigEmployer",
         "/editInsert",
         "/setEmployerStatus",
-        "/contractAdd"
+        "/contractInsert",
+
     ];
 }

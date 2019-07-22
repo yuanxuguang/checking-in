@@ -149,12 +149,9 @@
                   success:function(res){
                       if(res.info === 1){
                           layer.alert("增加成功", {icon: 6},function () {
-                              // // 获得frame索引
-                              // var index = parent.layer.getFrameIndex(window.name);
-                              // //关闭当前frame
-                              // parent.layer.close(index);
-                              //关闭当前frame
+                              // 可以对父窗口进行刷新
                               x_admin_father_reload();
+                              //关闭当前frame
                               x_admin_close();
                           });
                       }else{
@@ -178,16 +175,6 @@
                   }
 
               });
-
-            console.log(data);
-            //发异步，把数据提交给php
-            // layer.alert("增加成功", {icon: 6},function () {
-            //     //关闭当前frame
-            //     x_admin_close();
-            //
-            //     // 可以对父窗口进行刷新
-            //     x_admin_father_reload();
-            // });
             return false;
           });
         });

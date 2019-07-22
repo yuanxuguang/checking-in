@@ -16,6 +16,7 @@
     <div class="x-body">
       <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so">
+            {{--<img src="{{asset('storage/c_img/20190722_134132.png')}}" alt="">--}}
           <input class="layui-input" placeholder="开始日" name="start" id="start">
           <input class="layui-input" placeholder="截止日" name="end" id="end">
           <div class="layui-input-inline">

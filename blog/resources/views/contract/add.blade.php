@@ -4,14 +4,14 @@
   
   <body>
     <div class="x-body">
-        <form class="layui-form">
+        <form class="layui-form" id="data" >
             <div class="layui-form-item">
                 <label for="L_email" class="layui-form-label">
                     <span class="x-red">*</span>合约类型
                 </label>
                 <div class="layui-input-inline">
-                    <input type="radio" name="c_type" lay-skin="primary" title="主合约" value="0" checked="" id="zhu">
-                    <input type="radio" name="c_type" lay-skin="primary" title="子合约" value="1" id="fu" >
+                    <input type="radio" name="c_type" lay-skin="primary" title="主合约" value="1" checked="" id="zhu">
+                    <input type="radio" name="c_type" lay-skin="primary" title="子合约" value="2" id="zi" >
                 </div>
                 <div class="layui-form-mid layui-word-aux">
                     <span class="x-red"></span>
@@ -35,23 +35,23 @@
                   autocomplete="off" class="layui-input">
               </div>
           </div>
-          <div class="layui-form-item employer_type">
+          <div class="layui-form-item employer_type hidden" >
                 <label for="username" class="layui-form-label">
                     <span class="x-red">*</span>选择外判雇主
                 </label>
                 <div class="layui-input-inline">
-                    <select id="leaders" name="leader" class="valid">
-
+                    <select id="out_employer" name="out_employer" class="valid">
+                        <option value="0">请选择</option>
                     </select>
                 </div>
           </div>
-            <div class="layui-form-item employer_type">
+            <div class="layui-form-item employer_type hidden" >
                 <label for="username" class="layui-form-label">
                     <span class="x-red">*</span>上一合约
                 </label>
                 <div class="layui-input-inline">
-                    <select id="leaders" name="leader" class="valid">
-
+                    <select id="leaders" name="up_contract" class="valid">
+                        <option value="0">请选择</option>
                     </select>
                 </div>
             </div>
@@ -61,7 +61,8 @@
                     <span class="x-red">*</span>合约类型
                 </label>
                 <div class="layui-input-inline">
-                    <select id="leaders" name="leader" class="valid">
+                    <select id="leaders" name="c_c_type" class="valid">
+                        <option value="0">请选择</option>
                         <option value="1">Project</option>
                         <option value="2">Major Repair</option>
                     </select>
@@ -88,30 +89,6 @@
                 </div>
             </div>
 
-
-          <div class="layui-form-item">
-              <label for="username" class="layui-form-label">
-                  <span class="x-red">*</span>支付方式
-              </label>
-              <div class="layui-input-inline">
-                  <select name="contrller">
-                    <option>支付方式</option>
-                    <option>支付宝</option>
-                    <option>微信</option>
-                    <option>货到付款</option>
-                  </select>
-              </div>
-          </div>
-
-
-          <div class="layui-form-item layui-form-text">
-              <label for="desc" class="layui-form-label">
-                  描述
-              </label>
-              <div class="layui-input-block">
-                  <textarea placeholder="请输入内容" id="desc" name="desc" class="layui-textarea"></textarea>
-              </div>
-          </div>
           <div class="layui-form-item">
               <label for="L_repass" class="layui-form-label">
               </label>
@@ -142,17 +119,41 @@
             }
           });
 
+            $(".hidden").hide();
+            // window.onload = function(){
+
+            $('#zhu').next().on('click', function () {
+                $(".hidden").hide();
+            });
+            $('#zi').next().on('click', function () {
+
+                $(".hidden").show();
+            });
           //监听提交
           form.on('submit(add)', function(data){
-            console.log(data);
-            //发异步，把数据提交给php
-            layer.alert("增加成功", {icon: 6},function () {
-                // 获得frame索引
-                var index = parent.layer.getFrameIndex(window.name);
-                //关闭当前frame
-                parent.layer.close(index);
-            });
-            return false;
+              var form = new FormData(document.getElementById("data"));
+              $.post({
+                  url:"/contractInsert",
+                  data:form,
+                  processData:false,
+                  contentType:false,
+                  dataType:'json',
+                  success:function(res){
+                      if(res.info === 1){
+                          layer.alert("增加成功", {icon: 6},function () {
+                              x_admin_father_reload();// 可以对父窗口进行刷新
+                              //关闭当前frame
+                              x_admin_close();
+                          });
+                      }else{
+                          layer.alert("添加失败", {icon: 5},function () {
+                              //关闭当前frame
+                              x_admin_close();
+                          });
+                      }
+                  }
+              });
+              return false;
           });
           
           
