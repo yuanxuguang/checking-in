@@ -41,11 +41,10 @@ Route::post('/editInsert','EmployerController@editInsert'); //修改插入数据
 
 //合约管理
 Route::get('/contractList','ContractController@list'); //合约列表
-
-Route::get('/contractAdd','ContractController@add'); //合约列表
-Route::post('/contractInsert','ContractController@insert'); //合约列表
-Route::get('/contractEdit','ContractController@edit'); //合约列表
-Route::post('/contractEditInsert','ContractController@editInsert'); //合约列表
-Route::get('/contractDelete','ContractController@delete'); //合约列表
+Route::get('/contractAdd','ContractController@add'); //添加页面
+Route::post('/contractInsert','ContractController@insert'); //添加数据操作
+Route::get('/contractEdit/{cid}','ContractController@edit'); //修改界面
+Route::post('/contractEditInsert','ContractController@editInsert'); //修改插入
+Route::get('/contractDelete','ContractController@delete'); //删除合约
 
 });

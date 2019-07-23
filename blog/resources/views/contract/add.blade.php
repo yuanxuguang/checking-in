@@ -53,7 +53,7 @@
                     <span class="x-red">*</span>上一合约
                 </label>
                 <div class="layui-input-inline">
-                    <select id="leaders" name="up_contract" class="valid">
+                    <select id="leaders" name="up_contract_id" class="valid">
                         <option value="0">请选择</option>
                         @foreach($up_contracts as $up_contract)
                             <option value="{{$up_contract->id}}">{{$up_contract->c_name}}</option>
@@ -71,6 +71,8 @@
                         <option value="0">请选择</option>
                         <option value="1">Project</option>
                         <option value="2">Major Repair</option>
+                        <option value="3">Emergency Repair</option>
+                        <option value="4">Works Order</option>
                     </select>
                 </div>
             </div>
@@ -83,14 +85,14 @@
 
                 </div>
             </div>
-            <div class="layui-form-item employer_type" style="width:100%;height: 100%">
+            <div class="layui-form-item employer_type" >
                 <label for="username" class="layui-form-label">
                     <span class="x-red">*</span>选取位置
                 </label>
                 <div class="layui-input-inline " >
                     {{--<iframe src="https://m.amap.com/picker/?key=608d75903d29ad471362f8c58c550daf" style="width:100%;height: 100%" frameborder="0"></iframe>--}}
                     {{--<input type="button" name="c_type" lay-skin="primary"  value="0"  >--}}
-                    <a href="/map" class="layui-btn">选取位置</a>
+                    <a href="https://apis.map.qq.com/tools/locpicker?search=1&type=0&backurl=http://1.yxg404.top/contractAddS&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp" class="layui-btn">选取位置</a>
 
                 </div>
             </div>
