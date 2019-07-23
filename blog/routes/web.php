@@ -47,4 +47,12 @@ Route::get('/contractEdit/{cid}','ContractController@edit'); //修改界面
 Route::post('/contractEditInsert','ContractController@editInsert'); //修改插入
 Route::get('/contractDelete','ContractController@delete'); //删除合约
 
+//学校管理
+Route::get('/schoolList','SchoolController@list'); //学校列表
+Route::get('/schoolAdd','SchoolController@add'); //添加页面
+Route::post('/schoolInsert','SchoolController@insert'); //添加数据操作
+Route::get('/schoolEdit/{cid}','SchoolController@edit'); //修改界面
+Route::post('/schoolEditInsert','SchoolController@editInsert'); //修改插入
+Route::get('/schoolDelete','SchoolController@delete'); //删除
+
 });

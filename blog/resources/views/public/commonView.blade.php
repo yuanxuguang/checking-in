@@ -50,68 +50,7 @@
                 <a _href="/employerList">
                     <i class="iconfont">&#xe6a7;</i>
                     <cite>雇主管理</cite>
-
                 </a>
-
-                {{--<a href="javascript:;">--}}
-                    {{--<i class="iconfont">&#xe6b8;</i>--}}
-                    {{--<cite>会员管理</cite>--}}
-                    {{--<i class="iconfont nav_right">&#xe697;</i>--}}
-                {{--</a>--}}
-                {{--<ul >--}}
-                    {{--<li date-refresh="1">--}}
-                        {{--<a _href="member-list.html">--}}
-                            {{--<i class="iconfont">&#xe6a7;</i>--}}
-                            {{--<cite>会员列表(静态表格)</cite>--}}
-                            {{----}}
-                        {{--</a>--}}
-                    {{--</li >--}}
-                    {{--<li>--}}
-                        {{--<a _href="member-list1.html">--}}
-                            {{--<i class="iconfont">&#xe6a7;</i>--}}
-                            {{--<cite>会员列表(动态表格)</cite>--}}
-                            {{----}}
-                        {{--</a>--}}
-                    {{--</li >--}}
-                    {{--<li date-refresh="1">--}}
-                        {{--<a _href="member-del.html">--}}
-                            {{--<i class="iconfont">&#xe6a7;</i>--}}
-                            {{--<cite>会员删除</cite>--}}
-                            {{----}}
-                        {{--</a>--}}
-                    {{--</li>--}}
-                    {{--<li>--}}
-                        {{--<a href="javascript:;">--}}
-                            {{--<i class="iconfont">&#xe70b;</i>--}}
-                            {{--<cite>会员管理</cite>--}}
-                            {{--<i class="iconfont nav_right">&#xe697;</i>--}}
-                        {{--</a>--}}
-                        {{--<ul class="sub-menu">--}}
-                            {{--<li>--}}
-                                {{--<a _href="xxx.html">--}}
-                                    {{--<i class="iconfont">&#xe6a7;</i>--}}
-                                    {{--<cite>会员列表</cite>--}}
-                                    {{----}}
-                                {{--</a>--}}
-                            {{--</li >--}}
-                            {{--<li>--}}
-                                {{--<a _href="xx.html">--}}
-                                    {{--<i class="iconfont">&#xe6a7;</i>--}}
-                                    {{--<cite>会员删除</cite>--}}
-                                    {{----}}
-                                {{--</a>--}}
-                            {{--</li>--}}
-                            {{--<li>--}}
-                                {{--<a _href="xx.html">--}}
-                                    {{--<i class="iconfont">&#xe6a7;</i>--}}
-                                    {{--<cite>等级管理</cite>--}}
-                                    {{----}}
-                                {{--</a>--}}
-                            {{--</li>--}}
-                            {{----}}
-                        {{--</ul>--}}
-                    {{--</li>--}}
-                {{--</ul>--}}
             </li>
 
             <li>
@@ -133,6 +72,12 @@
                         </a>
                     </li >
                 </ul>
+            </li>
+            <li>
+                <a _href="/schoolList">
+                    <i class="iconfont">&#xe6a7;</i>
+                    <cite>学校管理</cite>
+                </a>
             </li>
             <li>
                 <a href="javascript:;">

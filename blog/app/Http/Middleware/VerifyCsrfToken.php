@@ -19,6 +19,7 @@ class VerifyCsrfToken extends Middleware
         "/setEmployerStatus",
         "/contractInsert",
         '/contractEditInsert',
+        '/schoolInsert',
 
     ];
 }
