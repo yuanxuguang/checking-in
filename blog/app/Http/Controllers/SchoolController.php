@@ -9,7 +9,15 @@ class SchoolController extends Controller
 {
     //
     public function list(){
-        $lists = DB::table('employer')->paginate(10);
+        if(request('condition')){
+            if(is_numeric(request('condition'))){
+                $lists = DB::table('school')->where('s_num',request('condition'))->where('eid',session('eid'))->paginate(10);
+            }else{
+                $lists = DB::table('school')->where('s_name_zn',request('condition'))->where('eid',session('eid'))->paginate(10);
+            }
+        }else{
+            $lists = DB::table('school')->where('eid',session('eid'))->paginate(10);
+        }
         return view('school.list',compact('lists'));
     }
 
@@ -23,15 +31,18 @@ class SchoolController extends Controller
     }
 
     public function edit($id){
-
+        $list = DB::table('school')->where('id',$id)->first();
+        return view('school.edit',compact('list'));
     }
 
     public function editInsert(){
-
+        $bool = DB::table('school')->where('id',request('id'))->update(request()->all());
+        return ['info' => $bool];
     }
 
-    public function del($id){
-
+    public function delete(){
+        $bool = DB::table('school')->where('id',request('id'))->delete();
+        return ['info' => $bool];
     }
 
 }

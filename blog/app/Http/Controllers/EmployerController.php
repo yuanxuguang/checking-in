@@ -32,6 +32,7 @@ class EmployerController extends Controller
                 ->when($where_phone,function($query) use ($where_phone){
                     return $query->where('phone',$where_phone);
                     },function($query) use ($where_name){ return $query->where('name',$where_name); })
+
                 ->paginate(10);
 
         }else if(isset($where2) && is_null($request['condition'])){

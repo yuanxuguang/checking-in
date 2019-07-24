@@ -55,4 +55,12 @@ Route::get('/schoolEdit/{cid}','SchoolController@edit'); //修改界面
 Route::post('/schoolEditInsert','SchoolController@editInsert'); //修改插入
 Route::get('/schoolDelete','SchoolController@delete'); //删除
 
+//职位管理
+Route::get('/jobList','JobController@list'); //职位列表
+Route::get('/jobAdd','JobController@add'); //添加页面
+Route::post('/jobInsert','JobController@insert'); //添加数据操作
+Route::get('/jobEdit/{cid}','JobController@edit'); //修改界面
+Route::post('/jobEditInsert','JobController@editInsert'); //修改插入
+Route::get('/jobDelete','JobController@delete'); //删除
+
 });

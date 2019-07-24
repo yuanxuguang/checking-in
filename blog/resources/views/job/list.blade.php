@@ -17,7 +17,7 @@
         <form class="layui-form layui-col-md12 x-so" action="/schoolList">
           {{--<input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">--}}
           {{--<input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">--}}
-          <input type="text" name="condition"  placeholder="学校编号，学校名称" autocomplete="off" class="layui-input">
+          {{--<input type="text" name="condition"  placeholder="学校编号，学校名称" autocomplete="off" class="layui-input">--}}
           {{--<div class="layui-input-inline">--}}
           {{--<select name="employerType" id="">--}}
             {{--<option value="0">雇主类型</option>--}}
@@ -25,33 +25,32 @@
             {{--<option value="2">外判雇主</option>--}}
           {{--</select>--}}
           {{--</div>--}}
-          <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+          {{--<button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>--}}
         </form>
       </div>
       <xblock>
-        <button class="layui-btn" onclick="x_admin_show('添加用户','/schoolAdd',600,500)"><i class="layui-icon"></i>添加</button>
+        <button class="layui-btn" onclick="x_admin_show('添加用户','/jobAdd',600,500)"><i class="layui-icon"></i>添加</button>
       </xblock>
       <table class="layui-table x-admin">
         <thead>
           <tr>
-            <th>学校编号</th>
-            <th>学校名称</th>
-            <th>学校简称</th>
-            <th>地区</th>
-            <th>地址</th>
+            <th>职位名称</th>
+            <th>职位名称(英文)</th>
+            <th>职位简称</th>
+            <th>类型</th>
             <th>操作</th>
           </tr>
         </thead>
         <tbody>
           @foreach($lists as $list)
           <tr>
-            <td>{{$list->s_num}}</td>
-            <td>{{$list->s_name_zn}}</td>
-            <td>{{$list->s_name_short}}</td>
-            <td>{{$list->s_area}}</td>
-            <td>{{$list->s_address}}</td>
+            <td>{{$list->j_name}}</td>
+            <td>{{$list->j_name_en}}</td>
+            <td>{{$list->j_name_short}}</td>
+            <td>@if($list->j_type == 1) 管理层 @else 工人@endif</td>
+
             <td class="td-manage">
-              <a title="编辑"  onclick="x_admin_show('编辑','/schoolEdit/{{$list->id}}',600,500)" href="javascript:;">
+              <a title="编辑"  onclick="x_admin_show('编辑','/jobEdit/{{$list->id}}',600,500)" href="javascript:;">
                 <i class="layui-icon">&#xe642;</i>
               </a>
               <a title="删除" onclick="member_del(this,{{$list->id}})" href="javascript:;">
@@ -82,58 +81,7 @@
         });
       });
 
-       /*用户-停用*/
-      function member_stop(obj,id){
-              if($(obj).attr('title')=='启用'){
-                layer.confirm('确认要启用吗？',function(index) {
-                    //发异步把用户状态进行更改
-                    $(obj).attr('title', '启用')
-                    $.post({
-                      url: "/setEmployerStatus",
-                      data: {'status': 1, 'id': id},
-                      dataType: 'json',
-                      success: function (res) {
-                        //发异步把用户状态进行更改
-                        $(obj).find('i').html('&#xe601;');
 
-                        $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已启用');
-                        layer.msg('已启用!', {icon: 6, time: 1000});
-                        window.location.reload();
-                      }
-                    });
-                });
-                // $(obj).find('i').html('&#xe62f;');
-                //
-                // $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                // layer.msg('已停用!',{icon: 5,time:1000});
-
-              }else{
-                layer.confirm('确认要停用吗？',function(index) {
-                //发异步把用户状态进行更改
-                $(obj).attr('title','停用')
-                $.post({
-                  url:"/setEmployerStatus",
-                  data:{'status':0,'id':id },
-                  dataType:'json',
-                  success:function(res){
-                    //发异步把用户状态进行更改
-                    $(obj).find('i').html('&#xe62f;');
-                    window.location.reload();
-                    $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                    layer.msg('已停用!', {icon: 5, time: 1000});
-                  }
-                });
-
-                // $(obj).attr('title','启用')
-                // $(obj).find('i').html('&#xe601;');
-                //
-                // $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-                // layer.msg('已启用!',{icon: 5,time:1000});
-              }
-              )};
-              
-
-      }
 
       /*用户-删除*/
       function member_del(obj,id){

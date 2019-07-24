@@ -7,38 +7,13 @@
     <div class="x-body">
         <form class="layui-form" id="data">
             <input type="text" name="id" value="{{$list->id}}" style="display:none;">
-
             <div class="layui-form-item">
                 <label for="L_email" class="layui-form-label">
-                    <span class="x-red">*</span>雇主类型
+                    <span class="x-red">*</span>学校编号
                 </label>
                 <div class="layui-input-inline">
-                    <input type="radio" name="type" lay-skin="primary" title="主雇主" value="0" id="zhu" @if(!$list->type) checked="checked" @endif>
-                    <input type="radio" name="type" lay-skin="primary" title="外判雇主" value="1" id="fu"  @if($list->type) checked="checked" @endif>
-                </div>
-                <div class="layui-form-mid layui-word-aux">
-                    <span class="x-red"></span>
-                </div>
-            </div>
-            <div class="layui-form-item employer_type">
-                <label for="username" class="layui-form-label">
-                    <span class="x-red">*</span>选择主雇主
-                </label>
-                <div class="layui-input-inline">
-                    <select id="leaders" name="leader" class="valid">
-                        @foreach($bigEmployers as $v)
-                            <option value="{{$v->id}}" @if($v->id == $list->boss) selected ="selected " @endif>{{$v->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label for="L_email" class="layui-form-label">
-                    <span class="x-red">*</span>雇主姓名
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="L_email" name="name" required="" lay-verify="name"
-                           autocomplete="off" class="layui-input" value="{{$list->name}}">
+                    <input type="text" id="L_email" name="s_num" required="" lay-verify="name"
+                           autocomplete="off" class="layui-input" value="{{$list->s_num}}">
                 </div>
                 <div class="layui-form-mid layui-word-aux">
                     <span class="x-red"></span>
@@ -46,42 +21,49 @@
             </div>
             <div class="layui-form-item">
                 <label for="L_username" class="layui-form-label">
-                    <span class="x-red">*</span>公司名称
+                    <span class="x-red">*</span>学校名称
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="L_username" name="company_name" required="" lay-verify="company_name"
-                           autocomplete="off" class="layui-input" value="{{$list->company_name}}">
+                    <input type="text" id="L_username" name="s_name_zn" required="" lay-verify="company_name"
+                           autocomplete="off" class="layui-input" value="{{$list->s_name_zn}}">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label for="L_username" class="layui-form-label">
-                    <span class="x-red">*</span>公司编号
+                    <span class="x-red">*</span>学校名称(英文)
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="L_username" name="company_num" required="" lay-verify="company_num"
-                           autocomplete="off" class="layui-input" value="{{$list->company_num}}">
+                    <input type="text" id="L_username" name="s_name_zn" required="" lay-verify="company_name"
+                           autocomplete="off" class="layui-input" value="{{$list->s_name_en}}">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label for="L_username" class="layui-form-label">
-                    <span class="x-red">*</span>手机号
+                    <span class="x-red">*</span>学校简称
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="L_username" name="phone" required="" lay-verify="phone"
-                           autocomplete="off" class="layui-input" value="{{$list->phone}}">
+                    <input type="text" id="L_username" name="s_name_en" required="" lay-verify="company_num"
+                           autocomplete="off" class="layui-input" value="{{$list->s_name_short}}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_username" class="layui-form-label">
+                    <span class="x-red">*</span>地区
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="L_username" name="s_area" required=""
+                           autocomplete="off" class="layui-input" value="{{$list->s_area}}">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label for="L_pass" class="layui-form-label">
-                    <span class="x-red">*</span>密码
+                    <span class="x-red">*</span>地址
                 </label>
                 <div class="layui-input-inline">
-                    <input type="password" id="L_pass" name="password" required="" lay-verify="pass"
-                           autocomplete="off" class="layui-input" value="{{$list->password}}">
+                    <input type="password" id="L_pass" name="s_address" required=""
+                           autocomplete="off" class="layui-input" value="{{$list->s_address}}">
                 </div>
-                <div class="layui-form-mid layui-word-aux">
-                    6到16个字符
-                </div>
+
             </div>
 
             <div class="layui-form-item">
@@ -94,10 +76,6 @@
         </form>
     </div>
     <script>
-        if ($('#zhu').attr('checked')) {
-            $(".employer_type").hide();
-        }
-
 
       layui.use(['form','layer'], function(){
           $ = layui.jquery;
@@ -119,22 +97,15 @@
           }
         });
 
-          $('#zhu').next().on('click', function () {
-              $(".employer_type").hide();
-          });
-          $('#fu').next().on('click', function () {
-
-              $(".employer_type").show();
-          });
 
         //监听提交
         form.on('submit(add)', function(data){
             $.post({
-                url:"/editInsert",
+                url:"/schoolEditInsert",
                 data:$("#data").serialize(),
                 dataType:'json',
                 success:function(res){
-                    if(res.info === 1){
+                    if(res.info == true){
                         layer.alert("修改成功", {icon: 6},function () {
                             // // 获得frame索引
                             // var index = parent.layer.getFrameIndex(window.name);

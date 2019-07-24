@@ -16,13 +16,13 @@ class ContractController extends Controller
     public function list(){
 
         if(request('c_name') && request('c_type')){
-            $contracts = Contract::where('c_name',request('c_name'))->where('c_type',request('c_type'))->paginate(10);
+            $contracts = Contract::where('c_name',request('c_name'))->where('c_type',request('c_type'))->where('eid',session('eid'))->paginate(10);
         }else if(request('c_name') && !request('c_type')){
-            $contracts = Contract::where('c_name',request('c_name'))->paginate(10);
+            $contracts = Contract::where('c_name',request('c_name'))->where('eid',session('eid'))->paginate(10);
         }else if(!request('c_name') && request('c_type')){
-            $contracts = Contract::where('c_type',request('c_type'))->paginate(10);
+            $contracts = Contract::where('c_type',request('c_type'))->where('eid',session('eid'))->paginate(10);
         }else{
-            $contracts = Contract::paginate(10);
+            $contracts = Contract::where('eid',session('eid'))->paginate(10);
         }
 //        $a = $contracts->byUpContract()->get();
         return view('contract.list',compact('contracts'));

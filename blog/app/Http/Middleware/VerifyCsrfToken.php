@@ -20,6 +20,9 @@ class VerifyCsrfToken extends Middleware
         "/contractInsert",
         '/contractEditInsert',
         '/schoolInsert',
+        '/schoolEditInsert',
+        '/jobInsert',
+        '/jobEditInsert',
 
     ];
 }
