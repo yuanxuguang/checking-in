@@ -17,7 +17,10 @@ class JobController extends Controller
     }
 
     public function insert(){
-        $bool = DB::table('job')->insert(request()->all());
+        $data = request()->all();
+        $data['eid'] = session('eid');
+
+        $bool = DB::table('job')->insert($data);
         return ['info' => $bool];
     }
 
@@ -32,6 +35,7 @@ class JobController extends Controller
     }
 
     public function delete(){
-
+        $bool = DB::table('job')->where('id',request('id'))->delete();
+        return ['info' => $bool];
     }
 }

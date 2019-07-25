@@ -63,4 +63,12 @@ Route::get('/jobEdit/{cid}','JobController@edit'); //修改界面
 Route::post('/jobEditInsert','JobController@editInsert'); //修改插入
 Route::get('/jobDelete','JobController@delete'); //删除
 
+//员工管理
+Route::get('/staffList','StaffController@list'); //员工列表
+Route::get('/staffAdd','StaffController@add'); //添加页面
+Route::post('/staffInsert','StaffController@insert'); //添加数据操作
+Route::get('/staffEdit/{cid}','StaffController@edit'); //修改界面
+Route::post('/staffEditInsert','StaffController@editInsert'); //修改插入
+Route::get('/staffDelete','StaffController@delete'); //删除
+
 });

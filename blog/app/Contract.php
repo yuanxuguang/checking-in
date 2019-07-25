@@ -15,12 +15,16 @@ class Contract extends Model
         return $this->belongsTo('App\Employer','eid','id');
     }
 
-    public function upContract(){
-        return $this->hasOne('App\Contract','up_contract');
+    public function staff(){
+        return $this->hasOne('App\Staff','c_id','id');
     }
 
-    public function byUpContract(){
-        return $this->belongsTo('App\Contract','up_contract','id');
-    }
+//    public function upContract(){
+//        return $this->hasOne('App\Contract','up_contract');
+//    }
+//
+//    public function byUpContract(){
+//        return $this->belongsTo('App\Contract','up_contract','id');
+//    }
 
 }

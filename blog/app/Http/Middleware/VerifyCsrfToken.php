@@ -23,6 +23,8 @@ class VerifyCsrfToken extends Middleware
         '/schoolEditInsert',
         '/jobInsert',
         '/jobEditInsert',
+        '/staffInsert',
+        '/staffEditInsert'
 
     ];
 }

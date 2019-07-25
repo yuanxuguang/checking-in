@@ -74,6 +74,12 @@
                 </a>
             </li>
             <li>
+                <a _href="/staffList">
+                    <i class="iconfont">&#xe6a7;</i>
+                    <cite>员工管理</cite>
+                </a>
+            </li>
+            <li>
                 <a href="javascript:;">
                     <i class="iconfont">&#xe723;</i>
                     <cite>分类管理</cite>

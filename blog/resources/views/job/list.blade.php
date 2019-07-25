@@ -88,7 +88,7 @@
           layer.confirm('确认要删除吗？',function(index){
               //发异步删除数据
               $.get({
-                url:'/schoolDelete',
+                url:'/jobDelete',
                 data:{'id':id},
                 dataType:'json',
                 success:function(){
