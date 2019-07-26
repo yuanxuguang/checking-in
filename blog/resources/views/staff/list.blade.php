@@ -14,22 +14,24 @@
     </div>
     <div class="x-body">
       <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so" action="/employerList">
+        <form class="layui-form layui-col-md12 x-so" action="/staffList">
           {{--<input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">--}}
           {{--<input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">--}}
-          <input type="text" name="condition"  placeholder="用户名，手机号" autocomplete="off" class="layui-input">
+          <input type="text" name="condition"  placeholder="用户名，手机" autocomplete="off" class="layui-input">
           <div class="layui-input-inline">
-          <select name="employerType" id="">
-            <option value="0">雇主类型</option>
-            <option value="1">主雇主</option>
-            <option value="2">外判雇主</option>
+          <select name="role" id="">
+            <option value="0">角色类型</option>
+            <option value="1">前线人员</option>
+            <option value="2">中层人员</option>
+            <option value="3">高层人员</option>
+            <option value="4">检视人员</option>
           </select>
           </div>
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
       <xblock>
-        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        {{--<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>--}}
         <button class="layui-btn" onclick="x_admin_show('添加用户','/staffAdd',600,500)"><i class="layui-icon"></i>添加</button>
         {{--<span class="x-right" style="line-height:40px">共有数据：88 条</span>--}}
       </xblock>
@@ -39,12 +41,11 @@
             {{--<th>--}}
               {{--<div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>--}}
             {{--</th>--}}
-            <th>雇主姓名</th>
+            <th>员工姓名</th>
             <th>手机号</th>
-            <th>公司名称</th>
-            <th>类型</th>
+            <th>角色</th>
+            <th>合约</th>
             <th>主顾主</th>
-            <th>公司编号</th>
             <th>状态</th>
             <th>操作</th></tr>
         </thead>
@@ -54,14 +55,11 @@
             {{--<td>--}}
               {{--<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>--}}
             {{--</td>--}}
-
             <td>{{$list->name}}</td>
-            <td>{{$list->phone}}</td>
-            <td>{{$list->company_name}}</td>
-            <td>@if($list->type == 1)主顾主@else外判雇主@endif</td>
-            <td>{{$list->boss_name}}</td>
-            <td>{{$list->company_num}}</td>
-
+            <td>{{$list->phone_num}}</td>
+            <td>@if($list->role ==1)前线人员@elseif($list->role ==2)中层人员@elseif($list->role ==3)高层人员@else检视人员@endif  </td>
+            <td>{{$list->contract->c_name}}</td>
+            <td>{{$employerName->name}}</td>
             <td class="td-status">
               @if($list->status)
                 <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
@@ -79,17 +77,15 @@
                   <i class="layui-icon">&#xe601;</i>
                 </a>
               @endif
-              <a title="编辑"  onclick="x_admin_show('编辑','/employerEdit/{{$list->id}}',600,500)" href="javascript:;">
+              <a title="编辑"  onclick="x_admin_show('编辑','/staffEdit/{{$list->id}}',600,500)" href="javascript:;">
                 <i class="layui-icon">&#xe642;</i>
               </a>
-              <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                <i class="layui-icon">&#xe640;</i>
-              </a>
+              {{--<a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">--}}
+                {{--<i class="layui-icon">&#xe640;</i>--}}
+              {{--</a>--}}
             </td>
           </tr>
           @endforeach
-
-
         </tbody>
       </table>
       <div class="page">
@@ -119,8 +115,8 @@
                 layer.confirm('确认要启用吗？',function(index) {
                     //发异步把用户状态进行更改
                     $(obj).attr('title', '启用')
-                    $.post({
-                      url: "/setEmployerStatus",
+                    $.get({
+                      url: "/setStaffStatus",
                       data: {'status': 1, 'id': id},
                       dataType: 'json',
                       success: function (res) {
@@ -142,8 +138,8 @@
                 layer.confirm('确认要停用吗？',function(index) {
                 //发异步把用户状态进行更改
                 $(obj).attr('title','停用')
-                $.post({
-                  url:"/setEmployerStatus",
+                $.get({
+                  url:"/setStaffStatus",
                   data:{'status':0,'id':id },
                   dataType:'json',
                   success:function(res){

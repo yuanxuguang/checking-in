@@ -25,11 +25,19 @@
             {{--<option value="2">外判雇主</option>--}}
           {{--</select>--}}
           {{--</div>--}}
+          <input  type="file" name="c_img" lay-skin="primary" title="主合约" value="0"  >
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
       <xblock>
         <button class="layui-btn" onclick="x_admin_show('添加用户','/schoolAdd',600,500)"><i class="layui-icon"></i>添加</button>
+        {{--<input type="file" id="import_excel" style="float: right;color:#009688;" multiple="multiple">--}}
+
+        <label for="fileinp" style="float: right;">
+          <input type="file" id="excel" name="excel">
+          <input type="button" id="btn" value="确定导入" style="height: 30px;background:#009688;border:none;color:#FFFFFF;padding: 10px;line-height: 15px;margin-right: 10px;">
+
+        </label>
       </xblock>
       <table class="layui-table x-admin">
         <thead>
@@ -152,12 +160,58 @@
           });
       }
 
+      var fileM = document.querySelector("#excel");
+      // $("#excel").on("change",function(){
+      //   //获取文件对象，files是文件选取控件的属性，存储的是文件选取控件选取的文件对象，类型是一个数组
+      //   var fileObj = fileM.files[0];
+      //   //创建formdata对象，formData用来存储表单的数据，表单数据时以键值对形式存储的。
+      //   var formData = new FormData();
+      //   formData.append('file', fileObj);
+      //   $.ajax({
+      //     url: "/excelImport",
+      //     type: "post",
+      //     dataType: "json",
+      //     data: formData,
+      //     async: false,
+      //     cache: false,
+      //     contentType: false,
+      //     processData: false,
+      //     success: function (json_data) {
+      //       alert("恭喜你！上传成功");
+      //     },
+      //   });
+      // });
+      $("#btn").click(function(){
+        //获取文件对象，files是文件选取控件的属性，存储的是文件选取控件选取的文件对象，类型是一个数组
+        var fileObj = fileM.files[0];
+        console.log(fileObj);
+        //创建formdata对象，formData用来存储表单的数据，表单数据时以键值对形式存储的。
+        var formData = new FormData();
+        formData.append('file', fileObj);
+        // var excel = new FormData(document.getElementById("excel"));
+        console.log(excel);
+          $.post({
+            url:'/excelImport',
+            data:formData,
+            processData:false,
+            contentType:false,
+            async: false,
+            cache: false,
+            dataType:'json',
+            success:function(res){
+              if(res.info == '-1'){
+                layer.msg('请上传xls或xlsx后缀文件', {icon: 2});
+              }else{
+                layer.msg('导入成功', {icon: 1});
+                window.location.reload();
+              }
 
+            }
+          })
+      });
 
       function delAll (argument) {
-
         var data = tableCheck.getData();
-  
         layer.confirm('确认要删除吗？'+data,function(index){
             //捉到所有被选中的，发异步进行删除
             layer.msg('删除成功', {icon: 1});

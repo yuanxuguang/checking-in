@@ -80,6 +80,11 @@
       <path value="$PROJECT_DIR$/blog/vendor/monolog/monolog" />
       <path value="$PROJECT_DIR$/blog/vendor/symfony/polyfill-php72" />
       <path value="$PROJECT_DIR$/blog/vendor/sebastian/code-unit-reverse-lookup" />
+      <path value="$PROJECT_DIR$/blog/vendor/phpoffice/phpexcel" />
+      <path value="$PROJECT_DIR$/blog/vendor/symfony/polyfill-php56" />
+      <path value="$PROJECT_DIR$/blog/vendor/symfony/polyfill-util" />
+      <path value="$PROJECT_DIR$/blog/vendor/maatwebsite/excel" />
+      <path value="$PROJECT_DIR$/blog/vendor/jeremeamia/superclosure" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7" />

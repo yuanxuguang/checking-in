@@ -17,10 +17,12 @@
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/hamcrest/hamcrest-php" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/jakub-onderka/php-console-color" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/jakub-onderka/php-console-highlighter" />
+      <excludeFolder url="file://$MODULE_DIR$/blog/vendor/jeremeamia/superclosure" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/kylekatarnls/update-helper" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/laravel/framework" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/laravel/tinker" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/league/flysystem" />
+      <excludeFolder url="file://$MODULE_DIR$/blog/vendor/maatwebsite/excel" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/mockery/mockery" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/monolog/monolog" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/mtdowling/cron-expression" />
@@ -33,6 +35,7 @@
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/phpdocumentor/reflection-common" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/phpdocumentor/reflection-docblock" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/phpdocumentor/type-resolver" />
+      <excludeFolder url="file://$MODULE_DIR$/blog/vendor/phpoffice/phpexcel" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/phpspec/prophecy" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/phpunit/php-code-coverage" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/phpunit/php-file-iterator" />
@@ -70,8 +73,10 @@
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/symfony/polyfill-iconv" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/symfony/polyfill-intl-idn" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/symfony/polyfill-mbstring" />
+      <excludeFolder url="file://$MODULE_DIR$/blog/vendor/symfony/polyfill-php56" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/symfony/polyfill-php70" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/symfony/polyfill-php72" />
+      <excludeFolder url="file://$MODULE_DIR$/blog/vendor/symfony/polyfill-util" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/symfony/process" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/symfony/routing" />
       <excludeFolder url="file://$MODULE_DIR$/blog/vendor/symfony/thanks" />
