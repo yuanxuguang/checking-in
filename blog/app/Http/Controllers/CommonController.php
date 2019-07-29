@@ -13,7 +13,8 @@ class CommonController extends Controller
     }
 
     public function commonView(){
-        return view('public.commonView');
+        $employer = DB::table('employer')->where('id',session('eid'))->first();
+        return view('public.commonView',compact('employer'));
     }
 
     public function indexView(){
@@ -38,8 +39,28 @@ class CommonController extends Controller
 
     public function loginOut(Request $request){
         $request->session()->flush();
-
         return redirect('/loginView');
     }
 
+    public function setDistance(){
+        $list = DB::table('distance')->where('eid',session('eid'))->first();
+        return view('distance',compact('list'));
+    }
+
+    public function updateDistance(){
+        if(request('office_distance') < 40){
+            return back()->with('error','上班打卡距离不能小于40');
+        }
+        if(request('work_distance') < 10){
+            return back()->with('error','工作地点打卡距离不能小于10');
+        }
+        $data = request()->all();
+        $data['eid'] = session('eid');
+        $bool = DB::table('distance')->update($data);
+        if($bool){
+            return redirect('/setDistance')->with('success','修改成功');
+        }else{
+            return back()->with('error','修改失败');
+        }
+    }
 }

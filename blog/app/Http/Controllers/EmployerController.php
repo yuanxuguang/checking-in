@@ -26,28 +26,53 @@ class EmployerController extends Controller
         }else if($request['employerType'] === '2'){
             $where2 = '2';
         }
+        if(session('e_type') != '777'){
+            if($request['condition'] && $request['employerType'] === '0'){
+                $lists = DB::table('employer')
+                    ->when($where_phone,function($query) use ($where_phone){
+                        return $query->where('phone',$where_phone);
+                        },function($query) use ($where_name){ return $query->where('name',$where_name); })
+                    ->where('boss',session('eid'))
+                    ->paginate(10);
 
-        if($request['condition'] && $request['employerType'] === '0'){
-            $lists = DB::table('employer')
-                ->when($where_phone,function($query) use ($where_phone){
-                    return $query->where('phone',$where_phone);
+            }else if(isset($where2) && is_null($request['condition'])){
+                $lists = DB::table('employer')
+                    ->where('type',$where2)
+                    ->where('boss',session('eid'))
+                    ->paginate(10);
+            }else if(isset($where2) && $request['condition']){
+                $lists = DB::table('employer')
+                    ->when($where_phone,function($query) use ($where_phone){
+                        return $query->where('phone',$where_phone);
                     },function($query) use ($where_name){ return $query->where('name',$where_name); })
-
-                ->paginate(10);
-
-        }else if(isset($where2) && is_null($request['condition'])){
-            $lists = DB::table('employer')
-                ->where('type',$where2)
-                ->paginate(10);
-        }else if(isset($where2) && $request['condition']){
-            $lists = DB::table('employer')
-                ->when($where_phone,function($query) use ($where_phone){
-                    return $query->where('phone',$where_phone);
-                },function($query) use ($where_name){ return $query->where('name',$where_name); })
-                ->where('type',$where2)
-                ->paginate(10);
+                    ->where('type',$where2)
+                    ->where('boss',session('eid'))
+                    ->paginate(10);
+            }else{
+                $lists = DB::table('employer')->where('boss',session('eid'))->paginate(10);
+            }
         }else{
-            $lists = DB::table('employer')->paginate(10);
+            if($request['condition'] && $request['employerType'] === '0'){
+                $lists = DB::table('employer')
+                    ->when($where_phone,function($query) use ($where_phone){
+                        return $query->where('phone',$where_phone);
+                    },function($query) use ($where_name){ return $query->where('name',$where_name); })
+                    ->paginate(10);
+
+            }else if(isset($where2) && is_null($request['condition'])){
+                $lists = DB::table('employer')
+                    ->where('type',$where2)
+                    ->paginate(10);
+            }else if(isset($where2) && $request['condition']){
+                $lists = DB::table('employer')
+                    ->when($where_phone,function($query) use ($where_phone){
+                        return $query->where('phone',$where_phone);
+                    },function($query) use ($where_name){ return $query->where('name',$where_name); })
+                    ->where('type',$where2)
+                    ->paginate(10);
+            }else{
+                $lists = DB::table('employer')->paginate(10);
+            }
         }
 //        foreach($lists as $k => $v){
 //            if($v->boss != 0){
@@ -66,6 +91,12 @@ class EmployerController extends Controller
 //        $lists = new LengthAwarePaginator(array_slice($lists, $offset, $perPage, true), count($lists), $perPage,
 //        $page, ['path' => $request->url(), 'query' => $request->query()]);
         return view('employer.list',compact('lists'));
+    }
+
+    public function employerInfo(){
+        $list = DB::table('employer')->where('id',session('eid'))->first();
+
+        return view('public.employerInfo',compact('list'));
     }
 
     public function add(){

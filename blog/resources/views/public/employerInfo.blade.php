@@ -7,38 +7,43 @@
     <div class="x-body">
         <form class="layui-form" id="data">
             <input type="text" name="id" value="{{$list->id}}" style="display:none;">
-
             <div class="layui-form-item">
                 <label for="L_email" class="layui-form-label">
                     <span class="x-red">*</span>雇主类型
                 </label>
                 <div class="layui-input-inline">
-                    <input type="radio" name="type" lay-skin="primary" title="主雇主" value="0" id="zhu" @if($list->type == '1') checked="checked" @endif>
-                    <input type="radio" name="type" lay-skin="primary" title="外判雇主" value="1" id="fu"  @if($list->type == '2') checked="checked" @endif>
+                    @if($list->type == '1')
+                     <input type="text" id="L_email" name="name" required="" lay-verify="name"
+                               autocomplete="off" class="layui-input" value="主顾主" style="border: 0px;outline:none;">
+                    @else
+                        <input type="text" id="L_email" name="name" required="" lay-verify="name"
+                               autocomplete="off" class="layui-input" value="子顾主" style="border: 0px;outline:none;">
+                    @endif
+                    {{--<input type="radio" name="type" lay-skin="primary" title="主雇主" value="0" id="zhu" style="">--}}
+                    {{--<input type="radio" name="type" lay-skin="primary" title="外判雇主" value="1" id="fu"  @if($list->type == '2') checked="checked" @endif>--}}
                 </div>
                 <div class="layui-form-mid layui-word-aux">
                     <span class="x-red"></span>
                 </div>
             </div>
+            @if($list->type == 2)
             <div class="layui-form-item employer_type">
                 <label for="username" class="layui-form-label">
-                    <span class="x-red">*</span>选择主雇主
-                </label>
-                <div class="layui-input-inline">
-                    <select id="leaders" name="leader" class="valid">
-                        @foreach($bigEmployers as $v)
-                            <option value="{{$v->id}}" @if($v->id == $list->boss) selected ="selected " @endif>{{$v->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label for="L_email" class="layui-form-label">
-                    <span class="x-red">*</span>雇主姓名
+                    <span class="x-red">*</span>主雇主:
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" id="L_email" name="name" required="" lay-verify="name"
-                           autocomplete="off" class="layui-input" value="{{$list->name}}">
+                           autocomplete="off" class="layui-input" value="{{$list->boss_name}}" style="border: 0px;outline:none;">
+                </div>
+            </div>
+            @endif
+            <div class="layui-form-item">
+                <label for="L_email" class="layui-form-label">
+                    <span class="x-red">*</span>雇主姓名:
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="L_email" name="name" required="" lay-verify="name"
+                           autocomplete="off" class="layui-input" value="{{$list->name}}" style="border: 0px;outline:none;">
                 </div>
                 <div class="layui-form-mid layui-word-aux">
                     <span class="x-red"></span>
@@ -50,7 +55,7 @@
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" id="L_username" name="company_name" required="" lay-verify="company_name"
-                           autocomplete="off" class="layui-input" value="{{$list->company_name}}">
+                           autocomplete="off" class="layui-input" value="{{$list->company_name}}" style="border: 0px;outline:none;">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -59,7 +64,7 @@
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" id="L_username" name="company_num" required="" lay-verify="company_num"
-                           autocomplete="off" class="layui-input" value="{{$list->company_num}}">
+                           autocomplete="off" class="layui-input" value="{{$list->company_num}}" style="border: 0px;outline:none;">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -68,29 +73,12 @@
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" id="L_username" name="phone" required="" lay-verify="phone"
-                           autocomplete="off" class="layui-input" value="{{$list->phone}}">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label for="L_pass" class="layui-form-label">
-                    <span class="x-red">*</span>密码
-                </label>
-                <div class="layui-input-inline">
-                    <input type="password" id="L_pass" name="password" required="" lay-verify="pass"
-                           autocomplete="off" class="layui-input" value="{{$list->password}}">
-                </div>
-                <div class="layui-form-mid layui-word-aux">
-                    6到16个字符
+                           autocomplete="off" class="layui-input" value="{{$list->phone}}" style="border: 0px;outline:none;">
                 </div>
             </div>
 
-            <div class="layui-form-item">
-                <label for="L_repass" class="layui-form-label">
-                </label>
-                <button  class="layui-btn" lay-filter="add" lay-submit="">
-                    修改
-                </button>
-            </div>
+
+
         </form>
     </div>
     <script>

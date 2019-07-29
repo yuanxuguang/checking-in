@@ -27,11 +27,14 @@ Route::group(['middleware' => ['login']],function(){
 
 //公共视图
 Route::get('/commonView','CommonController@commonView');
+Route::get('/setDistance','CommonController@setDistance');
+Route::get('/updateDistance','CommonController@updateDistance');
 //首页视图
 Route::get('/index','CommonController@indexView');
 
 //雇主管理
 Route::get('/employerList','EmployerController@list');//雇主列表
+Route::get('/employerInfo','EmployerController@employerInfo');//个人信息
 Route::post('/setEmployerStatus','EmployerController@setEmployerStatus'); //封号 解封操作
 Route::get('/employerAdd','EmployerController@add'); //添加视图
 Route::post('/getBigEmployer','EmployerController@getBigEmployer'); //添加外判雇主时获取主雇主数据

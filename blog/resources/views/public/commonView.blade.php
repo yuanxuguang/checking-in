@@ -29,10 +29,9 @@
                 </select>
             </li>
             <li class="layui-nav-item">
-            <a href="javascript:;">admin</a>
+            <a href="javascript:;">{{$employer->name}}</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
-              <dd><a onclick="x_admin_show('个人信息','http://www.baidu.com')">个人信息</a></dd>
-              <dd><a onclick="x_admin_show('切换帐号','http://www.baidu.com')">切换帐号</a></dd>
+              <dd><a onclick="x_admin_show('个人信息','/employerInfo',600,400)">个人信息</a></dd>
               <dd><a href="/loginOut">退出</a></dd>
             </dl>
             </li>
@@ -46,13 +45,14 @@
     <div class="left-nav">
       <div id="side-nav">
         <ul id="nav">
+            @if(session('e_type') == '777' || session('e_type')=='1')
             <li>
                 <a _href="/employerList">
                     <i class="iconfont">&#xe6a7;</i>
                     <cite>雇主管理</cite>
                 </a>
             </li>
-
+            @endif
             <li>
                 <a _href="/contractList">
                     <i class="iconfont">&#xe6a7;</i>
@@ -77,6 +77,12 @@
                 <a _href="/staffList">
                     <i class="iconfont">&#xe6a7;</i>
                     <cite>员工管理</cite>
+                </a>
+            </li>
+            <li>
+                <a _href="/setDistance">
+                    <i class="iconfont">&#xe6a7;</i>
+                    <cite>设置</cite>
                 </a>
             </li>
             <li>

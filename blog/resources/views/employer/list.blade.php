@@ -29,7 +29,7 @@
         </form>
       </div>
       <xblock>
-        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        {{--<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>--}}
         <button class="layui-btn" onclick="x_admin_show('添加用户','/employerAdd',600,500)"><i class="layui-icon"></i>添加</button>
         {{--<span class="x-right" style="line-height:40px">共有数据：88 条</span>--}}
       </xblock>
@@ -39,7 +39,6 @@
             {{--<th>--}}
               {{--<div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>--}}
             {{--</th>--}}
-
             <th>雇主姓名</th>
             <th>手机号</th>
             <th>公司名称</th>
@@ -51,18 +50,17 @@
         </thead>
         <tbody>
           @foreach($lists as $list)
+            @if($list->type != '777')
           <tr>
             {{--<td>--}}
               {{--<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>--}}
             {{--</td>--}}
-
             <td>{{$list->name}}</td>
             <td>{{$list->phone}}</td>
             <td>{{$list->company_name}}</td>
-            <td>@if($list->type == 1)主顾主@else外判雇主@endif</td>
+            <td>@if($list->type == '1')主顾主@else外判雇主@endif</td>
             <td>{{$list->boss_name}}</td>
             <td>{{$list->company_num}}</td>
-
             <td class="td-status">
               @if($list->status)
                 <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
@@ -88,15 +86,13 @@
               </a>
             </td>
           </tr>
+            @endif
           @endforeach
-
-
         </tbody>
       </table>
       <div class="page">
         {{$lists->links()}}
       </div>
-
     </div>
     <script>
       layui.use('laydate', function(){

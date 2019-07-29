@@ -11,8 +11,12 @@
                 <span class="x-red">*</span>合约类型
             </label>
             <div class="layui-input-inline">
-                <input type="radio" name="c_type" lay-skin="primary" title="主合约" value="1" @if($contract->c_type == '1') checked="checked" @endif id="zhu">
-                <input type="radio" name="c_type" lay-skin="primary" title="子合约" value="2" @if($contract->c_type == 2) checked="checked" @endif id="zi" >
+                @if(session('e_type') == '777' && session('e_type') == '1')
+                    <input type="radio" name="c_type" lay-skin="primary" title="主合约" value="1" checked="" id="zhu">
+                    <input type="radio" name="c_type" lay-skin="primary" title="子合约" value="2" id="zi" >
+                @else
+                    <input type="radio" name="c_type" lay-skin="primary" title="子合约" value="2" checked="" id="zi" >
+                @endif
             </div>
             <div class="layui-form-mid layui-word-aux">
                 <span class="x-red"></span>

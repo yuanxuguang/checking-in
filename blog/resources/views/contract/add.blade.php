@@ -10,8 +10,12 @@
                     <span class="x-red">*</span>合约类型
                 </label>
                 <div class="layui-input-inline">
-                    <input type="radio" name="c_type" lay-skin="primary" title="主合约" value="1" checked="" id="zhu">
-                    <input type="radio" name="c_type" lay-skin="primary" title="子合约" value="2" id="zi" >
+                    @if(session('e_type') == '777' || session('e_type') == '1')
+                        <input type="radio" name="c_type" lay-skin="primary" title="主合约" value="1" checked="" id="zhu">
+                        <input type="radio" name="c_type" lay-skin="primary" title="子合约" value="2" id="zi" >
+                    @else
+                        <input type="radio" name="c_type" lay-skin="primary" title="子合约" value="2" checked="" id="zi" >
+                    @endif
                 </div>
                 <div class="layui-form-mid layui-word-aux">
                     <span class="x-red"></span>
@@ -35,6 +39,7 @@
                   autocomplete="off" class="layui-input">
               </div>
           </div>
+            @if(session('e_type') == '777' || session('e_type' == '1'))
           <div class="layui-form-item employer_type hidden" >
                 <label for="username" class="layui-form-label">
                     <span class="x-red">*</span>选择外判雇主
@@ -48,6 +53,7 @@
                     </select>
                 </div>
           </div>
+
             <div class="layui-form-item employer_type hidden" >
                 <label for="username" class="layui-form-label">
                     <span class="x-red">*</span>上一合约
@@ -61,6 +67,21 @@
                     </select>
                 </div>
             </div>
+            @else
+                <div class="layui-form-item " >
+                    <label for="username" class="layui-form-label">
+                        <span class="x-red">*</span>上一合约
+                    </label>
+                    <div class="layui-input-inline">
+                        <select id="leaders" name="up_contract_id" class="valid">
+                            <option value="0">请选择</option>
+                            @foreach($up_contracts as $up_contract)
+                                <option value="{{$up_contract->id}}">{{$up_contract->c_name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            @endif
 
             <div class="layui-form-item employer_type">
                 <label for="username" class="layui-form-label">

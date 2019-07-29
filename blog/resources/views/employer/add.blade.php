@@ -10,8 +10,13 @@
                     <span class="x-red">*</span>雇主类型
                 </label>
                 <div class="layui-input-inline">
+                    @if(session('e_type') == '777')
                     <input type="radio" name="type" lay-skin="primary" title="主雇主" value="1" checked="" id="zhu">
                     <input type="radio" name="type" lay-skin="primary" title="外判雇主" value="2" id="fu" >
+                    @elseif(session('e_type') == '1')
+                        <input type="radio" name="type" lay-skin="primary" title="外判雇主" checked="" value="2" id="fu" >
+                    @else
+                    @endif
                 </div>
                 <div class="layui-form-mid layui-word-aux">
                     <span class="x-red"></span>
@@ -23,10 +28,15 @@
                 </label>
                 <div class="layui-input-inline">
                     <select id="leaders" name="leader" class="valid">
-                        <option value="0">请选择</option>
-                        @foreach($bigEmployers as $v)
-                        <option value="{{$v->id}}">{{$v->name}}</option>
-                        @endforeach
+                        @if(session('e_type') == '777')
+                            <option value="0">请选择</option>
+                            @foreach($bigEmployers as $v)
+                            <option value="{{$v->id}}">{{$v->name}}</option>
+                            @endforeach
+
+                        @else
+                            <option value="{{session('eid')}}">请选择</option>
+                        @endif
                     </select>
                 </div>
             </div>
