@@ -25,7 +25,6 @@
             {{--<option value="2">外判雇主</option>--}}
           {{--</select>--}}
           {{--</div>--}}
-          <input  type="file" name="c_img" lay-skin="primary" title="主合约" value="0"  >
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
@@ -35,8 +34,7 @@
 
         <label for="fileinp" style="float: right;">
           <input type="file" id="excel" name="excel">
-          <input type="button" id="btn" value="确定导入" style="height: 30px;background:#009688;border:none;color:#FFFFFF;padding: 10px;line-height: 15px;margin-right: 10px;">
-
+          <input type="button" id="btn" value="确定导入EXCEL" style="height: 30px;background:#009688;border:none;color:#FFFFFF;padding: 10px;line-height: 15px;margin-right: 10px;">
         </label>
       </xblock>
       <table class="layui-table x-admin">
@@ -139,8 +137,6 @@
                 // layer.msg('已启用!',{icon: 5,time:1000});
               }
               )};
-              
-
       }
 
       /*用户-删除*/

@@ -28,7 +28,9 @@ class SchoolController extends Controller
     }
 
     public function insert(){
-        $bool = DB::table('school')->insert(request()->all());
+        $data = request()->all();
+        $data['eid'] = session('eid');
+        $bool = DB::table('school')->insert($data);
         return ['info' => $bool];
     }
 

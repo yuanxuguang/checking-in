@@ -57,6 +57,7 @@ Route::post('/schoolInsert','SchoolController@insert'); //添加数据操作
 Route::get('/schoolEdit/{cid}','SchoolController@edit'); //修改界面
 Route::post('/schoolEditInsert','SchoolController@editInsert'); //修改插入
 Route::get('/schoolDelete','SchoolController@delete'); //删除
+Route::post('/excelImport','SchoolController@excelImport');//导入excel
 
 //职位管理
 Route::get('/jobList','JobController@list'); //职位列表
@@ -75,6 +76,12 @@ Route::post('/staffEditInsert','StaffController@editInsert'); //修改插入
 Route::get('/staffDelete','StaffController@delete'); //删除
 Route::get('/setStaffStatus','StaffController@setStaffStatus'); //更改状态
 
-Route::post('/excelImport','SchoolController@excelImport');
+//标签管理
+Route::get('/labelList','LabelController@list'); //列表
+Route::get('/labelAdd','LabelController@add'); //添加页面
+Route::post('/labelInsert','LabelController@insert'); //添加数据操作
+Route::get('/labelEdit/{cid}','LabelController@edit'); //修改界面
+Route::post('/labelEditInsert','LabelController@editInsert'); //修改插入
+Route::get('/labelDelete','LabelController@delete'); //删除合约
 
 });

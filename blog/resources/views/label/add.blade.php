@@ -1,6 +1,45 @@
 <!DOCTYPE html>
 <html class="x-admin-sm">
-@include('public.header')
+<head>
+
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html" CHARSET="big5">
+    <title>后台登录-X-admin2.1</title>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8 />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="/c/css/font.css">
+    <link rel="stylesheet" href="/c/css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript"src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+    <script src="/c/lib/layui/layui.js" charset="utf-8"></script>
+
+    <style>
+        .layui-form select{
+            display: block;
+        }
+        .layui-select-title{
+            display:none;
+        }
+        #WidgetFloaterPanels{
+            display:none !important;
+        }
+        #WidgetLogoPanel{
+            display:none !important;
+        }
+        .layui-layer-iframe{
+            z-index: 19891019; width: 600px; height: 400px; top: 1px !important; left: 510px;
+        }
+
+    </style>
+    <script type="text/javascript" src="/c/js/xadmin.js"></script>
+    <script type="text/javascript" src="/c/js/cookie.js"></script>
+    <script>
+        // 是否开启刷新记忆tab功能
+        // var is_remember = false;
+    </script>
+
+</head>
   
   <body>
     <div class="x-body">
@@ -10,111 +49,99 @@
                     <span class="x-red">*</span>合约类型
                 </label>
                 <div class="layui-input-inline">
-                    @if(session('e_type') == '777' || session('e_type') == '1')
-                        <input type="radio" name="c_type" lay-skin="primary" title="主合约" value="1" checked="" id="zhu">
-                        <input type="radio" name="c_type" lay-skin="primary" title="子合约" value="2" id="zi" >
-                    @else
-                        <input type="radio" name="c_type" lay-skin="primary" title="子合约" value="2" checked="" id="zi" >
-                    @endif
+                        <input type="radio" name="l_type" lay-skin="primary" title="二维码" value="1" checked="" id="code">
+                        <input type="radio" name="l_type" lay-skin="primary" title="索引" value="2" id="label" >
                 </div>
                 <div class="layui-form-mid layui-word-aux">
                     <span class="x-red"></span>
                 </div>
             </div>
+            @if($is_upLabel)
+            <div class="layui-form-item hidden">
+                <label for="L_email" class="layui-form-label">
+                    <span class="x-red"></span>
+                </label>
+                <div class="layui-input-inline">
+
+                    <input type="checkbox" name="l_type" lay-skin="primary" title="选择上级索引" value="1"  id="check_label">
+
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red"></span>
+                </div>
+            </div>
+            @endif
             <div class="layui-form-item">
               <label for="username" class="layui-form-label">
-                  <span class="x-red">*</span>合约名称
+                  <span class="x-red">*</span>标签名称
               </label>
               <div class="layui-input-inline">
-                  <input type="text" id="username" name="c_name" required="" lay-verify="required"
+                  <input type="text" id="username" name="l_name" required="" lay-verify="required"
                   autocomplete="off" class="layui-input">
               </div>
             </div>
-          <div class="layui-form-item">
-              <label for="username" class="layui-form-label">
-                  <span class="x-red">*</span>详细地址
-              </label>
-              <div class="layui-input-inline">
-                  <input type="text" id="username" name="c_address" required="" lay-verify="required"
-                  autocomplete="off" class="layui-input">
-              </div>
-          </div>
-            @if(session('e_type') == '777' || session('e_type') == '1')
-          <div class="layui-form-item employer_type hidden" >
-                <label for="username" class="layui-form-label">
-                    <span class="x-red">*</span>选择外判雇主
-                </label>
-                <div class="layui-input-inline">
-                    <select id="out_employer" name="out_employer" class="valid">
-                        <option value="0">请选择</option>
-                        @foreach($out_employers as $out_employer)
-                            <option value="{{$out_employer->id}}">{{$out_employer->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-          </div>
-
             <div class="layui-form-item employer_type hidden" >
                 <label for="username" class="layui-form-label">
-                    <span class="x-red">*</span>上一合约
+                    <span class="x-red">*</span>选择学校
                 </label>
                 <div class="layui-input-inline">
-                    <select id="leaders" name="up_contract_id" class="valid">
+                    <select id="out_employer" name="s_id" class="valid">
                         <option value="0">请选择</option>
-                        @foreach($up_contracts as $up_contract)
-                            <option value="{{$up_contract->id}}">{{$up_contract->c_name}}</option>
+                        @foreach($schools as $s)
+                        <option value="{{$s->id}}">{{$s->s_name_zn}}</option>
                         @endforeach
                     </select>
                 </div>
             </div>
-            @else
-                <div class="layui-form-item " >
+
+            <div class="layui-form-item employer_type hidden" >
                     <label for="username" class="layui-form-label">
-                        <span class="x-red">*</span>上一合约
+                        <span class="x-red">*</span>合约
                     </label>
                     <div class="layui-input-inline">
-                        <select id="leaders" name="up_contract_id" class="valid">
+                        <select id="out_employer" name="c_id" class="valid">
                             <option value="0">请选择</option>
-                            @foreach($up_contracts as $up_contract)
-                                <option value="{{$up_contract->id}}">{{$up_contract->c_name}}</option>
+                            @foreach($contracts as $c)
+                                <option value="{{$c->id}}">{{$c->c_name}}</option>
                             @endforeach
                         </select>
                     </div>
-                </div>
-            @endif
-
-            <div class="layui-form-item employer_type">
+            </div>
+            @if($up1_labels)
+            <div class="layui-form-item employer_type  label_level level1" >
                 <label for="username" class="layui-form-label">
-                    <span class="x-red">*</span>合约类型
+                    <span class="x-red">*</span>1级
                 </label>
                 <div class="layui-input-inline">
-                    <select id="leaders" name="c_c_type" class="valid">
-                        <option value="0">请选择</option>
-                        <option value="1">Project</option>
-                        <option value="2">Major Repair</option>
-                        <option value="3">Emergency Repair</option>
-                        <option value="4">Works Order</option>
+                    <select id="up1_label" name="up_label" class="valid">
+                        <option value="0">选择索引</option>
+                        @foreach($up1_labels as $up1)
+                        <option value="{{$up1->id}}">{{$up1->l_name}}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
-            <div class="layui-form-item employer_type">
-                <label for="username" class="layui-form-label">
-                    <span class="x-red">*</span>合约图片
-                </label>
-                <div class="layui-input-inline">
-                    <input type="file" name="c_img" lay-skin="primary" title="主合约" value="0"  >
+            @endif
+            {{--<div class="layui-form-item employer_type  label_level level2" >--}}
+                {{--<label for="username" class="layui-form-label">--}}
+                    {{--<span class="x-red">*</span>2级--}}
+                {{--</label>--}}
+                {{--<div class="layui-input-inline">--}}
+                    {{--<select id="out_employer" name="c_c_id" class="valid">--}}
+                        {{--<option value="0">选择索引</option>--}}
+                        {{--<option value="0">1</option>--}}
+                    {{--</select>--}}
+                {{--</div>--}}
+            {{--</div>--}}
 
-                </div>
-            </div>
-            <div class="layui-form-item employer_type" >
-                <label for="username" class="layui-form-label">
+            <div class="layui-form-item code_type ">
+                <label for="username" class="layui-form-label ">
                     <span class="x-red">*</span>选取位置
                 </label>
                 <div class="layui-input-inline " >
                     {{--<iframe src="https://m.amap.com/picker/?key=608d75903d29ad471362f8c58c550daf" style="width:100%;height: 100%" frameborder="0"></iframe>--}}
                     {{--<input type="button" name="c_type" lay-skin="primary"  value="0"  >--}}
                     <a href="https://apis.map.qq.com/tools/locpicker?search=1&type=0&backurl=http://1.yxg404.top/contractAddS&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp" class="layui-btn">选取位置</a>
-
                 </div>
             </div>
 
@@ -149,26 +176,36 @@
           });
 
             $(".hidden").hide();
+            $(".label_level").hide();
             // window.onload = function(){
 
-            $('#zhu').next().on('click', function () {
+            $('#code').next().on('click', function () {
                 $(".hidden").hide();
             });
-            $('#zi').next().on('click', function () {
-
+            $('#label').next().on('click', function () {
+                $(".code_type").hide();
                 $(".hidden").show();
+            });
+
+            $("#check_label").next().on('click',function(){
+                var nn = $("#check_label").is(":checked");
+                if(nn == true){
+                    $('.label_level').show();
+                }else{
+                    $('.label_level').hide();
+                }
             });
           //监听提交
           form.on('submit(add)', function(data){
               var form = new FormData(document.getElementById("data"));
               $.post({
-                  url:"/contractInsert",
+                  url:"/labelInsert",
                   data:form,
                   processData:false,
                   contentType:false,
                   dataType:'json',
                   success:function(res){
-                      if(res.info === 1){
+                      if(res.info == true){
                           layer.alert("增加成功", {icon: 6},function () {
                               x_admin_father_reload();// 可以对父窗口进行刷新
                               //关闭当前frame
@@ -187,7 +224,11 @@
           
           
         });
-
+        window.onload = function(){
+            $("#up1_label").change(function(){
+                alert(66)
+            });
+        };
         (function(){
             var iframe = document.getElementById('test').contentWindow;
             document.getElementById('test').onload = function(){
