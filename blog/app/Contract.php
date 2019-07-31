@@ -16,7 +16,12 @@ class Contract extends Model
     }
 
     public function staff(){
+        //第二个参数是Staff 中与改模型相关联的外键，第三个是该模型中的主键
         return $this->hasOne('App\Staff','c_id','id');
+    }
+
+    public function label(){
+        return $this->hasOne('App\Label','c_id','id');
     }
 
 //    public function upContract(){

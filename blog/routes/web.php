@@ -83,5 +83,6 @@ Route::post('/labelInsert','LabelController@insert'); //添加数据操作
 Route::get('/labelEdit/{cid}','LabelController@edit'); //修改界面
 Route::post('/labelEditInsert','LabelController@editInsert'); //修改插入
 Route::get('/labelDelete','LabelController@delete'); //删除合约
+Route::get('/getLevel2Label','LabelController@getLevel2Label');
 
 });
