@@ -103,9 +103,16 @@
                 </label>
                 <div class="layui-input-inline">
                     <input type="file" name="c_img" lay-skin="primary" title="主合约" value="0"  >
-
                 </div>
             </div>
+            @if($api_addr)
+                <div style="display: none;">
+                    <input type="text" name="api_addr_name" value="{{$api_addr['name']}}">
+                    <input type="text" name="api_latng" value="{{$api_addr['latng']}}">
+                    <input type="text" name="api_addr" value="{{$api_addr['addr']}}">
+                    <input type="text" name="api_city" value="{{$api_addr['city']}}">
+                </div>
+            @endif
             <div class="layui-form-item employer_type" >
                 <label for="username" class="layui-form-label">
                     <span class="x-red">*</span>选取位置
@@ -113,7 +120,7 @@
                 <div class="layui-input-inline " >
                     {{--<iframe src="https://m.amap.com/picker/?key=608d75903d29ad471362f8c58c550daf" style="width:100%;height: 100%" frameborder="0"></iframe>--}}
                     {{--<input type="button" name="c_type" lay-skin="primary"  value="0"  >--}}
-                    <a href="https://apis.map.qq.com/tools/locpicker?search=1&type=0&backurl=http://1.yxg404.top/contractAddS&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp" class="layui-btn">选取位置</a>
+                    <a href="https://apis.map.qq.com/tools/locpicker?search=1&type=0&backurl=http://1.yxg404.top/contractAdd&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp" class="layui-btn">选取位置</a>@if($api_addr)选取成功@endif
 
                 </div>
             </div>

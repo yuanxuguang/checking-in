@@ -14,7 +14,6 @@ use DB;
 class ContractController extends Controller
 {
     public function list(){
-
         if(request('c_name') && request('c_type')){
             $contracts = Contract::where('c_name',request('c_name'))->where('c_type',request('c_type'))->where('eid',session('eid'))->paginate(10);
         }else if(request('c_name') && !request('c_type')){
@@ -29,18 +28,17 @@ class ContractController extends Controller
     }
 
     public function add(){
+        $api_addr = request()->all();
         //外判雇主列表
         $out_employers = DB::table('employer')->where('id',session('eid'))->get();
         $up_contracts = DB::table('contract')->where('c_type',"1")->get();
-
-        return view('contract.add',compact('out_employers','up_contracts'));
+        return view('contract.add',compact('out_employers','up_contracts','api_addr'));
     }
 
     public function insert(Request $request){
 //        if(!$request['out_employer']){
 //            $data = $request->except('out_employer','up_contract');
 //        }else{
-
 //        }
         $data = $request->except('out_employer');
         $data['eid'] = session('eid');
@@ -56,6 +54,7 @@ class ContractController extends Controller
         }else{
             $data['up_contract_name'] = '无';
         }
+        dd($data);
         $info = \DB::table('contract')->insert($data);
         $info = empty($info)?0:1;
         return ['info' =>$info];
