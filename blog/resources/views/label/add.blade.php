@@ -63,7 +63,7 @@
                 </label>
                 <div class="layui-input-inline">
 
-                    <input type="checkbox" name="l_type" lay-skin="primary" title="选择上级索引" value="1"  id="check_label">
+                    <input type="checkbox" lay-skin="primary" title="选择上级索引" value="1"  id="check_label">
 
                 </div>
                 <div class="layui-form-mid layui-word-aux">
@@ -80,7 +80,7 @@
                   autocomplete="off" class="layui-input">
               </div>
             </div>
-            <div class="layui-form-item employer_type hidden" >
+            <div class="layui-form-item employer_type hidden changeLabel" >
                 <label for="username" class="layui-form-label">
                     <span class="x-red">*</span>选择学校
                 </label>
@@ -94,7 +94,7 @@
                 </div>
             </div>
 
-            <div class="layui-form-item employer_type hidden" >
+            <div class="layui-form-item employer_type hidden changeLabel" >
                     <label for="username" class="layui-form-label">
                         <span class="x-red">*</span>合约
                     </label>
@@ -108,12 +108,12 @@
                     </div>
             </div>
             @if($up1_labels)
-            <div class="layui-form-item employer_type  label_level level1" >
+            <div class="layui-form-item employer_type label_level level1" >
                 <label for="username" class="layui-form-label">
                     <span class="x-red">*</span>1级
                 </label>
                 <div class="layui-input-inline">
-                    <select id="up1_label" name="up_label" class="valid">
+                    <select id="up1_label" name="up_label1" class="valid">
                         <option value="0">选择索引</option>
                         @foreach($up1_labels as $up1)
                         <option value="{{$up1->id}}">{{$up1->l_name}}</option>
@@ -122,6 +122,41 @@
                 </div>
             </div>
             @endif
+                <div class="layui-form-item employer_type label_level level2" >
+                    <label for="username" class="layui-form-label">
+                        <span class="x-red">*</span>2级
+                    </label>
+                    <div class="layui-input-inline">
+                        <select id="up2_label" name="up_label2" class="valid">
+                            <option value="0">选择索引</option>
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item employer_type label_level level3" >
+                    <label for="username" class="layui-form-label">
+                        <span class="x-red">*</span>3级
+                    </label>
+                    <div class="layui-input-inline">
+                        <select id="up3_label" name="up_label3" class="valid">
+                            <option value="0">选择索引</option>
+
+                        </select>
+                    </div>
+                </div>
+            <div class="layui-form-item employer_type label_level level4" >
+                <label for="username" class="layui-form-label">
+                    <span class="x-red">*</span>4级
+                </label>
+                <div class="layui-input-inline">
+                    <select id="up4_label" name="up_label4" class="valid">
+                        <option value="0">选择索引</option>
+
+                    </select>
+                </div>
+            </div>
+
             {{--<div class="layui-form-item employer_type  label_level level2" >--}}
                 {{--<label for="username" class="layui-form-label">--}}
                     {{--<span class="x-red">*</span>2级--}}
@@ -133,7 +168,6 @@
                     {{--</select>--}}
                 {{--</div>--}}
             {{--</div>--}}
-
             <div class="layui-form-item code_type ">
                 <label for="username" class="layui-form-label ">
                     <span class="x-red">*</span>选取位置
@@ -179,25 +213,33 @@
             $(".label_level").hide();
             // window.onload = function(){
 
-            $('#code').next().on('click', function () {
+            $('#code').next().on('click', function(){
                 $(".hidden").hide();
+
             });
-            $('#label').next().on('click', function () {
+            $('#label').next().on('click', function(){
                 $(".code_type").hide();
                 $(".hidden").show();
+
             });
 
-            $("#check_label").next().on('click',function(){
+            $("#check_label").next().on('click',function(){ //一级标签 是否显示二级标签
                 var nn = $("#check_label").is(":checked");
                 if(nn == true){
-                    $('.label_level').show();
+                    $('.level1').show();
+                    $(".changeLabel").hide();
+                    $(".level2",".level3").hide();
                 }else{
                     $('.label_level').hide();
+                    $(".changeLabel").show();
                 }
             });
+
           //监听提交
           form.on('submit(add)', function(data){
               var form = new FormData(document.getElementById("data"));
+              // var tes = $("input[type='radio']:checked").val();
+              // alert(tes);
               $.post({
                   url:"/labelInsert",
                   data:form,
@@ -212,7 +254,7 @@
                               x_admin_close();
                           });
                       }else{
-                          layer.alert("添加失败", {icon: 5},function () {
+                          layer.alert("添加失败", {icon: 5},function (){
                               //关闭当前frame
                               x_admin_close();
                           });
@@ -221,12 +263,83 @@
               });
               return false;
           });
-          
-          
+
         });
         window.onload = function(){
-            $("#up1_label").change(function(){
-                alert(66)
+            $("#up1_label").change(function(){  //一级下是否有二级
+                var lid = $(this).children('option:selected').val();
+                $('#up2_label option[value != 0]').empty();
+                $.get({
+                    url:'/getLevel2Label',
+                    data:{'lid':lid},
+                    dataType: 'json',
+                    success:function(res){
+                        // var in = $.isEmptyObject(res);
+                        // alert(in);
+                        if($.isEmptyObject(res)){
+                            $('.level2').hide();
+                            $('.level3').hide();
+                            $('.level4').hide();
+                        }else{
+                            $('.level2').show();
+                            var list = new Array();
+                            for(var i in res){
+                                list[i] = "<option value="+res[i].id+">"+res[i].l_name+"</option>";
+                                $('#up2_label').append(list[i]);
+                            }
+                        }
+                    }
+                })
+            });
+
+            $("#up2_label").change(function(){  //二级是否有三级
+                var lid = $(this).children('option:selected').val();
+                $('#up3_label option[value != 0]').empty(); // up3_label下不等于0 的清空,避免数据重复
+                $.get({
+                    url:'/getLevel2Label',
+                    data:{'lid':lid},
+                    dataType: 'json',
+                    success:function(res){
+                        // var in = $.isEmptyObject(res);
+                        // alert(in);
+                        if($.isEmptyObject(res)){
+                            $('.level3').hide();
+                            $('.level4').hide();
+                        }else{
+                            $('.level3').show();
+
+                            var list = new Array();
+                            for(var i in res){
+                                list[i] = "<option value="+res[i].id+">"+res[i].l_name+"</option>";
+                                $('#up3_label').append(list[i]);
+                            }
+                        }
+                    }
+                })
+            });
+
+            $("#up3_label").change(function(){  //三级是否有四级
+                var lid = $(this).children('option:selected').val();
+                $('#up4_label option[value != 0]').empty(); // up3_label下不等于0 的清空,避免数据重复
+                $.get({
+                    url:'/getLevel2Label',
+                    data:{'lid':lid},
+                    dataType: 'json',
+                    success:function(res){
+                        // var in = $.isEmptyObject(res);
+                        // alert(in);
+                        if($.isEmptyObject(res)){
+                            $('.level4').hide();
+                        }else{
+                            $('.level4').show();
+                            var list = new Array();
+                            for(var i in res){
+                                list[i] = "<option value="+res[i].id+">"+res[i].l_name+"</option>";
+                                $('#up4_label').append(list[i]);
+                            }
+                        }
+                    }
+                })
             });
         };
         (function(){
@@ -245,7 +358,8 @@
         hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
-      })();</script>
+      })();
+    </script>
 
   @include('public.footer')
   </body>

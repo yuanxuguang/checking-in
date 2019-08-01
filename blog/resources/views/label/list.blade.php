@@ -33,7 +33,6 @@
       <xblock>
         {{--<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>--}}
         <button class="layui-btn" onclick="x_admin_show('添加标签','/labelAdd','600','800')"><i class="layui-icon"></i>添加</button>
-
       </xblock>
       <table class="layui-table">
         <thead>
@@ -41,24 +40,22 @@
             {{--<th>--}}
               {{--<div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>--}}
             {{--</th>--}}
-            <th>合约名称</th>
-            <th>地址</th>
-            <th>主/子</th>
-            <th>上一级合约</th>
-            <th>时间</th>
-            <th>公司编号</th>
+            <th>标签名</th>
+            <th>合约</th>
+            <th>学校</th>
+            <th>位置</th>
+            <th>类型</th>
             <th >操作</th>
             </tr>
         </thead>
         <tbody>
-          @foreach($contracts as $c)
+          @foreach($lists as $c)
           <tr>
-            <td>{{$c->c_name}}</td>
-            <td>{{$c->c_address}}</td>
-            <td>@if($c->c_type == 1)主@else 子@endif</td>
-            <td>{{$c->up_contract_name}}</td>
-            <td>{{$c->created_at}}</td>
-
+            <td>{{$c->l_name}}</td>
+            <td>{{$c->contract->c_name}}</td>
+            <td>{{$c->school->s_name_zn}}</td>
+            <td>{{$c->l_loaction}}</td>
+            <td>@if($c->l_type == '1') '二维码' @else '索引' @endif</td>
             <td class="td-manage">
               <a title="编辑"  onclick="x_admin_show('编辑','/contractEdit/{{$c->id}}',600,500)" href="javascript:;">
                 <i class="layui-icon">&#xe642;</i>
@@ -72,7 +69,7 @@
         </tbody>
       </table>
       <div class="page">
-        {{$contracts->links()}}
+        {{$lists->links()}}
       </div>
 
     </div>
@@ -96,7 +93,6 @@
           layer.confirm('确认要停用吗？',function(index){
 
               if($(obj).attr('title')=='启用'){
-
                 //发异步把用户状态进行更改
                 $(obj).attr('title','停用')
                 $(obj).find('i').html('&#xe62f;');
@@ -134,9 +130,7 @@
       }
 
 
-
       function delAll (argument) {
-
         var data = tableCheck.getData();
   
         layer.confirm('确认要删除吗？'+data,function(index){
