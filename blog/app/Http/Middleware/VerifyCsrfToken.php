@@ -27,6 +27,7 @@ class VerifyCsrfToken extends Middleware
         '/staffEditInsert',
         '/excelImport',
         '/labelInsert',
+        '/labelEditInsert',
 
     ];
 }

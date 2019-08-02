@@ -44,27 +44,26 @@
   <body>
     <div class="x-body">
         <form class="layui-form" id="data" >
+            <input type="text" name="id" value="{{$label->id}}" style="display:none;">
             <div class="layui-form-item">
                 <label for="L_email" class="layui-form-label">
                     <span class="x-red">*</span>合约类型
                 </label>
                 <div class="layui-input-inline">
-                        <input type="radio" name="l_type" lay-skin="primary" title="二维码" value="1" checked="" id="code">
-                        <input type="radio" name="l_type" lay-skin="primary" title="索引" value="2" id="label" >
+                        <input type="radio" name="l_type" lay-skin="primary" title="二维码" value="1" @if($label->l_type=='1') checked="" @endif id="code">
+                        <input type="radio" name="l_type" lay-skin="primary" title="索引" value="2" @if($label->l_type=='2') checked="" @endif id="label" >
                 </div>
                 <div class="layui-form-mid layui-word-aux">
                     <span class="x-red"></span>
                 </div>
             </div>
-            @if($is_upLabel)
-            <div class="layui-form-item hidden">
+            @if($label->level != 1)
+            <div class="layui-form-item change_label">
                 <label for="L_email" class="layui-form-label">
                     <span class="x-red"></span>
                 </label>
                 <div class="layui-input-inline">
-
-                    <input type="checkbox" lay-skin="primary" title="选择上级索引" value="1"  id="check_label">
-
+                    <input type="checkbox" lay-skin="primary" title="选择上级索引" value="1"  checked="checked" id="check_label">
                 </div>
                 <div class="layui-form-mid layui-word-aux">
                     <span class="x-red"></span>
@@ -78,8 +77,7 @@
                 <div class="layui-input-inline " >
                     {{--<iframe src="https://m.amap.com/picker/?key=608d75903d29ad471362f8c58c550daf" style="width:100%;height: 100%" frameborder="0"></iframe>--}}
                     {{--<input type="button" name="c_type" lay-skin="primary"  value="0"  >--}}
-                    <a href="https://apis.map.qq.com/tools/locpicker?search=1&type=0&backurl=http://1.yxg404.top/labelAdd&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp" class="layui-btn">选取位置</a>@if($api_addr)选取成功@endif
-
+                    <a href="https://apis.map.qq.com/tools/locpicker?search=1&type=0&backurl=http://1.yxg404.top/labelEdit/{{$label->id}}&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp" class="layui-btn">选取位置</a>@if($api_addr)选取成功@endif
                 </div>
             </div>
             <div class="layui-form-item">
@@ -88,7 +86,7 @@
               </label>
               <div class="layui-input-inline">
                   <input type="text" id="username" name="l_name" required="" lay-verify="required"
-                  autocomplete="off" class="layui-input">
+                  autocomplete="off" class="layui-input" value="{{$label->l_name}}">
               </div>
             </div>
 
@@ -100,13 +98,13 @@
                         <select id="out_employer" name="c_id" class="valid">
                             <option value="0">请选择</option>
                             @foreach($contracts as $c)
-                                <option value="{{$c->id}}">{{$c->c_name}}</option>
+                                <option value="{{$c->id}}" @if($label->c_id == $c->id) selected="" @endif>{{$c->c_name}}</option>
                             @endforeach
                         </select>
                     </div>
             </div>
 
-            @if($up1_labels)
+            @if($up1_Label)
             <div class="layui-form-item employer_type label_level level1" >
                 <label for="username" class="layui-form-label">
                     <span class="x-red">*</span>1级
@@ -114,25 +112,28 @@
                 <div class="layui-input-inline">
                     <select id="up1_label" name="up_label1" class="valid">
                         <option value="0">选择索引</option>
-                        @foreach($up1_labels as $up1)
-                        <option value="{{$up1->id}}">{{$up1->l_name}}</option>
+                        @foreach($up1_Label as $up1)
+                        <option value="{{$up1->id}}" @if($up1->id == $label->one_label) selected="selected" @endif >{{$up1->l_name}}</option>
                         @endforeach
                     </select>
                 </div>
             </div>
             @endif
-                <div class="layui-form-item employer_type label_level level2" >
+
+            @if(isset($up2_Label))
+                <div class="layui-form-item employer_type label_level level2">
                     <label for="username" class="layui-form-label">
                         <span class="x-red">*</span>2级
                     </label>
                     <div class="layui-input-inline">
                         <select id="up2_label" name="up_label2" class="valid">
                             <option value="0">选择索引</option>
-
+                                <option value="{{$up2_Label->id}}" selected="">{{$up2_Label->l_name}}</option>
                         </select>
                     </div>
                 </div>
-
+            @endif
+            @if(isset($up3_Label))
                 <div class="layui-form-item employer_type label_level level3" >
                     <label for="username" class="layui-form-label">
                         <span class="x-red">*</span>3级
@@ -140,10 +141,12 @@
                     <div class="layui-input-inline">
                         <select id="up3_label" name="up_label3" class="valid">
                             <option value="0">选择索引</option>
+                            <option value="{{$up3_Label->id}}" selected="">{{$up3_Label->l_name}}</option>
 
                         </select>
                     </div>
                 </div>
+            @endif
             <div class="layui-form-item employer_type label_level level4" >
                 <label for="username" class="layui-form-label">
                     <span class="x-red">*</span>4级
@@ -151,7 +154,6 @@
                 <div class="layui-input-inline">
                     <select id="up4_label" name="up_label4" class="valid">
                         <option value="0">选择索引</option>
-
                     </select>
                 </div>
             </div>
@@ -181,7 +183,7 @@
               <label for="L_repass" class="layui-form-label">
               </label>
               <button  class="layui-btn" lay-filter="add" lay-submit="">
-                  增加
+                  修改
               </button>
           </div>
       </form>
@@ -207,26 +209,63 @@
             }
           });
 
-            $(".hidden").hide();
-            $(".label_level").hide();
+            // $(".hidden").hide();
             // window.onload = function(){
 
             $('#code').next().on('click', function(){
                 $(".hidden").hide();
                 $(".code_type").show();
+                $('.change_label').hide();
+                $(".label_level").hide();
             });
-
             $('#label').next().on('click', function(){
                 $(".code_type").hide();
                 $(".hidden").show();
+                $('.change_label').show();
+                $(".label_level").hide();
             });
+            if($("#label").is(":checked")){
+                $('.code_type').hide();
+                $('.change_label').show();
+                // alert($("#up2_label").val());
+            }else{
+                $('.code_type').show();
+                $('.change_label').hide();
+            }
 
+            //为了直接显示视图
+            if($("#check_label").is(":checked")){
+                if($("#up1_label").val() != 0){
+                    $(".level1").show();
+                    $(".level2",".level3",".level4").hide();
+                    if($("#up2_label").val() != 0){
+                        if($("#up3_label").val() != 0){
+
+                            $(".level2").show();
+                            $(".level3").show();
+                            $(".level4").show();
+                        }
+
+
+                        $(".level4").hide();
+                        $(".change_label").show();
+                    }
+                }
+                $('.level1').show();
+                $(".changeLabel").hide();
+
+            }else{
+                $('.label_level').hide();
+                $(".changeLabel").show();
+            }
+
+            //为了修改改变标签状态
             $("#check_label").next().on('click',function(){ //一级标签 是否显示二级标签
                 var nn = $("#check_label").is(":checked");
                 if(nn == true){
                     $('.level1').show();
                     $(".changeLabel").hide();
-                    $(".level2",".level3").hide();
+                    // $(".level2",".level3").hide();
                 }else{
                     $('.label_level').hide();
                     $(".changeLabel").show();
@@ -239,20 +278,20 @@
               // var tes = $("input[type='radio']:checked").val();
               // alert(tes);
               $.post({
-                  url:"/labelInsert",
+                  url:"/labelEditInsert",
                   data:form,
                   processData:false,
                   contentType:false,
                   dataType:'json',
                   success:function(res){
                       if(res.info != false){
-                          layer.alert("增加成功", {icon: 6},function () {
+                          layer.alert("修改成功", {icon: 6},function () {
                               x_admin_father_reload();// 可以对父窗口进行刷新
                               //关闭当前frame
                               x_admin_close();
                           });
                       }else{
-                          layer.alert("添加失败", {icon: 5},function (){
+                          layer.alert("修改失败", {icon: 5},function (){
                               //关闭当前frame
                               x_admin_close();
                           });

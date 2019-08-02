@@ -15,16 +15,24 @@
     </div>
     <div class="x-body">
       <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so" action="/contractList">
+        <form class="layui-form layui-col-md12 x-so" action="/labelList">
             {{--<img src="{{asset('storage/c_img/20190722_134132.png')}}" alt="">--}}
           {{--<input class="layui-input" placeholder="开始日" name="start" id="start">--}}
           {{--<input class="layui-input" placeholder="截止日" name="end" id="end">--}}
-          <input type="text" name="c_name"  placeholder="合约名称" autocomplete="off" class="layui-input">
           <div class="layui-input-inline">
-          <select name="c_type">
-            <option value="0">全部</option>
-          <option value="1">主合约</option>
-          <option value="2">子合约</option>
+            <select name="l_type">
+              <option value="0">选择标签类型</option>
+              <option value="1">二维码</option>
+              <option value="2">索引</option>
+            </select>
+          </div>
+          <div class="layui-input-inline">
+          <select name="contract">
+            <option value="0">选择合约</option>
+            @foreach($contracts as $c)
+              <option value="{{$c->id}}">{{$c->c_name}}</option>
+            @endforeach
+
           </select>
           </div>
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
@@ -42,25 +50,24 @@
             {{--</th>--}}
             <th>标签名</th>
             <th>合约</th>
-            <th>学校</th>
+
             <th>位置</th>
             <th>类型</th>
             <th >操作</th>
             </tr>
         </thead>
         <tbody>
-          @foreach($lists as $c)
+          @foreach($lists as $l)
           <tr>
-            <td>{{$c->l_name}}</td>
-            <td>{{$c->contract->c_name}}</td>
-            <td>{{$c->school->s_name_zn}}</td>
-            <td>{{$c->l_loaction}}</td>
-            <td>@if($c->l_type == '1') '二维码' @else '索引' @endif</td>
+            <td>{{$l->l_name}}</td>
+            <td>{{$l->contract->c_name}}</td>
+            <td>{{$l->api_latng}}</td>
+            <td>@if($l->l_type == '1') '二维码' @else '索引' @endif</td>
             <td class="td-manage">
-              <a title="编辑"  onclick="x_admin_show('编辑','/contractEdit/{{$c->id}}',600,500)" href="javascript:;">
+              <a title="编辑"  onclick="x_admin_show('编辑','/labelEdit/{{$l->id}}',600,500)" href="javascript:;">
                 <i class="layui-icon">&#xe642;</i>
               </a>
-              <a title="删除" onclick="member_del(this,'{{$c->id}}')" href="javascript:;">
+              <a title="删除" onclick="member_del(this,'{{$l->id}}')" href="javascript:;">
                 <i class="layui-icon">&#xe640;</i>
               </a>
             </td>
@@ -69,7 +76,7 @@
         </tbody>
       </table>
       <div class="page">
-        {{$lists->links()}}
+        {{$lists->appends(['l_type'=>$request['l_type'],'contract'=>$request['contract']])->links()}}
       </div>
 
     </div>

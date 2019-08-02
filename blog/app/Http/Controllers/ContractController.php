@@ -54,7 +54,7 @@ class ContractController extends Controller
         }else{
             $data['up_contract_name'] = '无';
         }
-        dd($data);
+//        dd($data);
         $info = \DB::table('contract')->insert($data);
         $info = empty($info)?0:1;
         return ['info' =>$info];
