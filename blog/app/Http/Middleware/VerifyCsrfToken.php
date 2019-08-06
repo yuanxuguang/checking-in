@@ -28,6 +28,12 @@ class VerifyCsrfToken extends Middleware
         '/excelImport',
         '/labelInsert',
         '/labelEditInsert',
-
+        '/apiLogin',
+        '/apiPwdVerify',
+        '/apiClockCamera',
+        '/officeClockOut',
+        '/clockRecord',
+        '/indexing',
+        '/stationClock',
     ];
 }

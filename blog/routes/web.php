@@ -86,3 +86,14 @@ Route::get('/labelDelete','LabelController@delete'); //删除合约
 Route::get('/getLevel2Label','LabelController@getLevel2Label');
 
 });
+
+//API
+//员工端
+Route::post('/apiLogin','ApiController@login'); //登陆
+Route::post('/apiPwdVerify','ApiController@apiPwdVerify');//密码验证
+Route::post('/apiClockCamera','ApiController@apiClockCamera');//上班打卡-摄像
+Route::post('/officeClockOut','ApiController@officeClockOut');//上班-下班打卡
+Route::post('/clockRecord','ApiController@clockRecord');//打卡记录
+Route::post('/stationClock','ApiController@stationClock');//上班打卡-工位打卡
+//管理端
+Route::post('/indexing','ApiController@indexing');//打卡记录

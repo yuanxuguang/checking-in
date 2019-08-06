@@ -56,7 +56,12 @@ class CommonController extends Controller
         }
         $data = request()->all();
         $data['eid'] = session('eid');
-        $bool = DB::table('distance')->update($data);
+        $is_set = DB::table('distance')->where('eid',session('eid'))->count();
+        if($is_set){
+            $bool = DB::table('distance')->update($data);
+        }else{
+            $bool = DB::table('distance')->insert($data);
+        }
         if($bool){
             return redirect('/setDistance')->with('success','修改成功');
         }else{

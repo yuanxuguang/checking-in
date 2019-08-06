@@ -11,14 +11,25 @@
                 </label>
                 <div class="layui-input-inline">
                     @if(session('e_type') == '777' || session('e_type') == '1')
-                        <input type="radio" name="c_type" lay-skin="primary" title="主合约" value="1" checked="" id="zhu">
-                        <input type="radio" name="c_type" lay-skin="primary" title="子合约" value="2" id="zi" >
+                        <input type="radio" name="c_type" lay-skin="primary" title="主合约" value="1" @if($c == '1')checked="" @endif id="zhu">
+                        <input type="radio" name="c_type" lay-skin="primary" title="子合约" value="2" @if($c == '2')checked="" @endif id="zi" >
                     @else
                         <input type="radio" name="c_type" lay-skin="primary" title="子合约" value="2" checked="" id="zi" >
                     @endif
                 </div>
                 <div class="layui-form-mid layui-word-aux">
                     <span class="x-red"></span>
+                </div>
+            </div>
+            <div class="layui-form-item employer_type" >
+                <label for="username" class="layui-form-label">
+                    <span class="x-red">*</span>选取位置
+                </label>
+                <div class="layui-input-inline " >
+                    {{--<iframe src="https://m.amap.com/picker/?key=608d75903d29ad471362f8c58c550daf" style="width:100%;height: 100%" frameborder="0"></iframe>--}}
+                    {{--<input type="button" name="c_type" lay-skin="primary"  value="0"  >--}}
+                    <a id="getLocation" href="https://apis.map.qq.com/tools/locpicker?search=1&type=0&backurl=http://1.yxg404.top/contractAdd&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp" class="layui-btn">选取位置</a>@if($api_addr)选取成功@endif
+
                 </div>
             </div>
             <div class="layui-form-item">
@@ -113,17 +124,7 @@
                     <input type="text" name="api_city" value="{{$api_addr['city']}}">
                 </div>
             @endif
-            <div class="layui-form-item employer_type" >
-                <label for="username" class="layui-form-label">
-                    <span class="x-red">*</span>选取位置
-                </label>
-                <div class="layui-input-inline " >
-                    {{--<iframe src="https://m.amap.com/picker/?key=608d75903d29ad471362f8c58c550daf" style="width:100%;height: 100%" frameborder="0"></iframe>--}}
-                    {{--<input type="button" name="c_type" lay-skin="primary"  value="0"  >--}}
-                    <a href="https://apis.map.qq.com/tools/locpicker?search=1&type=0&backurl=http://1.yxg404.top/contractAdd&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp" class="layui-btn">选取位置</a>@if($api_addr)选取成功@endif
 
-                </div>
-            </div>
 
           <div class="layui-form-item">
               <label for="L_repass" class="layui-form-label">
@@ -135,6 +136,18 @@
       </form>
     </div>
     <script>
+
+        window.onload = function(){
+            $('#zhu').next().children('i').on('click', function () {
+                $("#getLocation").attr("href","https://apis.map.qq.com/tools/locpicker?search=1&type=0&backurl=http://1.yxg404.top/contractAdd?c=1&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp");
+
+            });
+            $('#zi').next().children('i').on('click', function () {
+                $("#getLocation").attr("href","https://apis.map.qq.com/tools/locpicker?search=1&type=0&backurl=http://1.yxg404.top/contractAdd?c=2&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp");
+
+            })
+        };
+
         layui.use(['form','layer'], function(){
             $ = layui.jquery;
           var form = layui.form

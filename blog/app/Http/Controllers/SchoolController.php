@@ -64,7 +64,6 @@ class SchoolController extends Controller
             Excel::load($fileName, function ($reader){
                 $data = $reader->all()[0]; //只取第一个sheet内容
                 foreach($data as $v){
-
                     $info['s_num'] = (int)($v->num);
                     $info['s_name_zn'] = $v->name;
                     $info['s_name_en'] = $v->enname;
@@ -72,7 +71,6 @@ class SchoolController extends Controller
                     $info['s_area'] = $v->area;
                     $info['s_address'] = $v->address;
                     $info['eid'] = session('eid');
-
                     DB::table('school')->insert($info);
                 }
                 //> 处理上传文件数据 此时 处理多个上传的 sheet 文件 这里不需要
