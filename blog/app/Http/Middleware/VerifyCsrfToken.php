@@ -35,5 +35,6 @@ class VerifyCsrfToken extends Middleware
         '/clockRecord',
         '/indexing',
         '/stationClock',
+        '/registerStaff',
     ];
 }

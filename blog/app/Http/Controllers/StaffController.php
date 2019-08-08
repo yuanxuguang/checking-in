@@ -46,7 +46,8 @@ class StaffController extends Controller
 
 //        $lists = Staff::paginate(10);
         $employerName = DB::table('employer')->where('id',session('eid'))->select('name')->first();
-        return view('staff.list',compact('lists','employerName'));
+        $outEmployer = DB::table('employer')->where('boss',session('eid'))->where('type','2')->get();
+        return view('staff.list',compact('lists','employerName','outEmployer'));
     }
 
     public function add(){
@@ -61,6 +62,13 @@ class StaffController extends Controller
         $data['eid'] = session('eid');
 //        dd($data);
         $bool = Staff::insert($data);
+        return ['info' => $bool];
+    }
+
+    //员工绑定外判雇主
+    public function staffOutEmployer($sid,$eid){
+        $bool = DB::table('staff')->where('id',$sid)->update(['out_eid' => $eid]);
+
         return ['info' => $bool];
     }
 

@@ -1,5 +1,26 @@
 <html class="x-admin-sm">
-@include('public.header')
+<head>
+
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html" CHARSET="big5">
+  <title>后台登录-X-admin2.1</title>
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8 />
+    <meta http-equiv="Cache-Control  />
+  <link rel="stylesheet" href="/c/css/font.css">
+  <link rel="stylesheet" href="/c/css/xadmin.css">
+  <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript"src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+  <script src="/c/lib/layui/layui.js" charset="utf-8"></script>
+
+  <script type="text/javascript" src="/c/js/xadmin.js"></script>
+  <script type="text/javascript" src="/c/js/cookie.js"></script>
+  <script>
+    // 是否开启刷新记忆tab功能
+    // var is_remember = false;
+  </script>
+
+</head>
   
   <body>
     <div class="x-nav">
@@ -15,6 +36,7 @@
     <div class="x-body">
       <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so" action="/staffList">
+
           {{--<input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">--}}
           {{--<input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">--}}
           <input type="text" name="condition"  placeholder="用户名，手机" autocomplete="off" class="layui-input">
@@ -44,8 +66,7 @@
             <th>员工姓名</th>
             <th>手机号</th>
             <th>角色</th>
-            <th>合约</th>
-            <th>主顾主</th>
+            <th>外判雇主</th>
             <th>状态</th>
             <th>操作</th></tr>
         </thead>
@@ -55,26 +76,35 @@
             {{--<td>--}}
               {{--<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>--}}
             {{--</td>--}}
-            <td>{{$list->name}}</td>
+
+            <td>{{$list->name1}}{{$list->name2}}</td>
             <td>{{$list->phone_num}}</td>
             <td>@if($list->role ==1)前线人员@elseif($list->role ==2)中层人员@elseif($list->role ==3)高层人员@else检视人员@endif  </td>
-            <td>{{$list->contract->c_name}}</td>
-            <td>{{$employerName->name}}</td>
+            <td>
+              <div class="layui-input-inline">
+                <select class="change_out staff{{$list->id}}" onchange="change({{$list->id}})" name="outEmployer" >
+                  <option value="0">选择外判雇</option>
+                  @foreach($outEmployer as $o)
+                  <option value="{{$o->id}}" @if($list->out_eid == $o->id) selected="" @endif>{{$o->name}}</option>
+                  @endforeach
+                </select>
+              </div>
+            </td>
             <td class="td-status">
               @if($list->status)
                 <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
               @else
-                <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled" >已停用</span>
+                <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled" >停用</span>
               @endif
             </td>
             <td class="td-manage">
               @if($list->status)
               <a onclick="member_stop(this,{{$list->id}})" href="javascript:;"  title="停用">
-                <i class="layui-icon">&#xe601;</i>
+                <i class="layui-icon layui-btn" style="background-color: brown">停用</i>
               </a>
               @else
                 <a onclick="member_stop(this,{{$list->id}})" href="javascript:;"  title="启用">
-                  <i class="layui-icon">&#xe601;</i>
+                  <i class="layui-icon layui-btn">启用</i>
                 </a>
               @endif
               <a title="编辑"  onclick="x_admin_show('编辑','/staffEdit/{{$list->id}}',600,500)" href="javascript:;">
@@ -94,6 +124,24 @@
 
     </div>
     <script>
+
+        // $(".change_out").change(function(){
+        //
+        // });
+        //员工绑定外判雇主
+        function change(id){
+          var eid = $(".staff"+id).val();
+          $.get({
+            url:'/staffOutEmployer/'+id+'/'+eid,
+            success:function(data){
+
+            }
+          });
+
+        }
+
+
+
       layui.use('laydate', function(){
         var laydate = layui.laydate;
         
@@ -107,6 +155,7 @@
           elem: '#end' //指定元素
         });
       });
+
 
        /*用户-停用*/
       function member_stop(obj,id){

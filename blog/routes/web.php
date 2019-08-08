@@ -75,6 +75,7 @@ Route::get('/staffEdit/{cid}','StaffController@edit'); //修改界面
 Route::post('/staffEditInsert','StaffController@editInsert'); //修改插入
 Route::get('/staffDelete','StaffController@delete'); //删除
 Route::get('/setStaffStatus','StaffController@setStaffStatus'); //更改状态
+Route::get('/staffOutEmployer/{sid}/{eid}','StaffController@staffOutEmployer'); //更改状态
 
 //标签管理
 Route::get('/labelList','LabelController@list'); //列表
@@ -88,12 +89,16 @@ Route::get('/getLevel2Label','LabelController@getLevel2Label');
 });
 
 //API
+Route::post('/registerStaff','ApiController@registerStaff');
 //员工端
+Route::get('/getEmployer','ApiController@getEmployer');//员工注册-模糊搜索获取雇主
+Route::get('/getJob','ApiController@getJob');//员工注册-获取雇主创建的职位
 Route::post('/apiLogin','ApiController@login'); //登陆
 Route::post('/apiPwdVerify','ApiController@apiPwdVerify');//密码验证
 Route::post('/apiClockCamera','ApiController@apiClockCamera');//上班打卡-摄像
 Route::post('/officeClockOut','ApiController@officeClockOut');//上班-下班打卡
 Route::post('/clockRecord','ApiController@clockRecord');//打卡记录
 Route::post('/stationClock','ApiController@stationClock');//上班打卡-工位打卡
+
 //管理端
 Route::post('/indexing','ApiController@indexing');//打卡记录

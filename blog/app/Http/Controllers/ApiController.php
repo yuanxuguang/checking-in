@@ -8,6 +8,121 @@ use DB;
 use Storage;
 class ApiController extends Controller
 {
+    //员工注册-模糊搜索获取雇主
+    public function getEmployer(){
+        $employer = DB::table('employer')
+                    ->where('company_num','like','%'.request('condition').'%')
+                    ->select('id','name')
+                    ->get();
+        if($employer->isEmpty()){
+            $message = '数据为空';
+            $code = 200;
+            $data = [];
+        }elseif(!$employer->isEmpty()){
+            $message = 'success';
+            $code = 200;
+            $data = $employer;
+        }else{
+            $message = 'error';
+            $code = 400;
+            $data = [];
+        }
+        $json['message'] = $message;
+        $json['code'] = $code;
+        $json['data'] = $data;
+        return json_encode($json,true);
+    }
+
+    //根据雇主获取职位
+    public function getJob(){
+        $jobs = DB::table('job')->where('eid',request('eid'))->select('id','j_type','j_name','j_name_en')->get();
+        if($jobs->isEmpty()){
+            $message = '数据为空';
+            $code = 200;
+            $data = [];
+        }elseif(!$jobs->isEmpty()){
+            $message = 'success';
+            $code = 200;
+            $data = $jobs;
+        }else{
+            $message = 'error';
+            $code = 400;
+            $data = [];
+        }
+        $json['message'] = $message;
+        $json['code'] = $code;
+        $json['data'] = $data;
+        return json_encode($json,true);
+    }
+
+    //员工注册
+    public function registerStaff(){
+        $validator = Validator::make(request()->all(),[
+            'eid' => 'required',
+            'company_num' => 'required',
+            'country_type' => 'required',
+            'phone_num' => 'required',
+            'sex' => 'required',
+            'name1' => 'required',
+            'name2' => 'required',
+            's_type' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'safety_problem1' => 'required',
+            'safety_problem2' => 'required',
+            'face_img' => 'required',
+            'safety_problem3' => 'required',
+            'j_id' => 'required',
+            'technical_merit' => 'required',
+            ]);
+        $data = request()->all();
+        if($validator->fails()){
+            return response()->json(['message' => $validator->errors(),'code' => 400,'data' => '']);
+        }
+        if(request()->hasFile('face_img')){
+            $face_img_path = Storage::putFileAs('/public/c_face_img',request('face_img'),date('Ymd').'_'.date('His').'.png');
+            $face_img_path = str_replace('public','/storage',$face_img_path);
+            $data['face_img'] = $face_img_path;
+        }
+        if(request()->hasFile('work_card_front')){
+            $work_card_front_path = Storage::putFileAs('/public/c_work',request('work_card_front'),date('Ymd').'_'.date('His').'.png');
+            $work_card_front_path = str_replace('public','/storage',$work_card_front_path);
+            $data['work_card_front'] = $work_card_front_path;
+        }
+        if(request()->hasFile('work_card_reverse')){
+            $work_card_reverse_path = Storage::putFileAs('/public/c_work',request('work_card_reverse'),date('Ymd').'_'.date('His').'.png');
+            $work_card_reverse_path = str_replace('public','/storage',$work_card_reverse_path);
+            $data['work_card_reverse'] = $work_card_reverse_path;
+        }
+        if(request()->hasFile('safety_card_front')){
+            $safety_card_front_path = Storage::putFileAs('/public/c_safety',request('safety_card_front'),date('Ymd').'_'.date('His').'.png');
+            $safety_card_front_path = str_replace('public','/storage',$safety_card_front_path);
+            $data['safety_card_front'] = $safety_card_front_path;
+        }
+        if(request()->hasFile('safety_card_reverse')){
+            $safety_card_reverse_path = Storage::putFileAs('/public/c_safety',request('safety_card_reverse'),date('Ymd').'_'.date('His').'.png');
+            $safety_card_reverse_path = str_replace('public','/storage',$safety_card_reverse_path);
+            $data['safety_card_reverse'] = $safety_card_reverse_path;
+        }
+
+        $data['password'] = md5(request('password'));
+        $data['status'] = '0';
+        $bool = DB::table('staff')->insert($data);
+        if($bool){
+            $message = 'success';
+            $code = 200;
+            $data = [];
+        }else{
+            $message = 'error';
+            $code = 400;
+            $data = [];
+        }
+        $json['message'] = $message;
+        $json['code'] = $code;
+        $json['data'] = $data;
+        return json_encode($json,true);
+    }
+
     //登陆
     public function login(){
         $validator = Validator::make(request()->all(),[
