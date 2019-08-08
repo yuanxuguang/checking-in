@@ -22,5 +22,8 @@ class Staff extends Model{
         return $this->belongsTo('App\Job','j_id','id');
     }
 
+    public function clock(){
+        return $this->hasOne('App\Clock','s_id','id');
+    }
 
 }

@@ -230,9 +230,47 @@ class ApiController extends Controller
         $data['type'] = '1';
         if(request()->hasFile('video')){
             $path = Storage::putFileAs('/public/c_video',request('video'),date('Ymd').'_'.date('His').'.mp4');
-            $path = str_replace('public','storage',$path);
+            $path = str_replace('public','/storage',$path);
             $data['video'] = $path;
         }
+        $bool = DB::table('clock')->insert($data);
+        if($bool){
+            $message = '打卡成功';
+            $code = 200;
+            $data = [];
+        }else{
+            $message = '打卡失败';
+            $code = 400;
+            $data = [];
+        }
+        $json['message'] = $message;
+        $json['code'] = $code;
+        $json['data'] = $data;
+        return json_encode($json,true);
+    }
+
+    //上班打卡-人脸识别
+    public function clockFace(){
+        $validator = Validator::make(request()->all(),[
+            'sid' => 'required',
+            'face_img' => 'required',
+            'eid' => 'required',
+            'coordinate' => 'required'
+        ]);
+        if($validator->fails()){
+            return response()->json(['message' => $validator->errors(),'code' => 400,'data' => '']);
+        }
+        $data = request()->all();
+        $data['start_time'] = date('Y-m-d H:i:s',time());
+        $data['date'] = date('Y-m-d',time());
+        $data['type'] = '1';
+        if(request()->hasFile('face_img')){
+            $path = Storage::putFileAs('/public/c_face_img',request('video'),date('Ymd').'_'.date('His').'.png');
+            $path = str_replace('public','/storage',$path);
+            $data['face_img'] = $path;
+        }
+
+        //做人脸比对
         $bool = DB::table('clock')->insert($data);
         if($bool){
             $message = '打卡成功';
@@ -268,7 +306,6 @@ class ApiController extends Controller
         //判断打卡地点与当前地点的距离
         $distance = $this->get_distance(request('coordinate'),request('code_GPS'));
         $setDistance = DB::table('distance')->where('eid',request('eid'))->first();
-
         if($distance > $setDistance->work_distance){
             $json['message'] = '与打卡地点相距太远';
             $json['code'] = 200;

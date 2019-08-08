@@ -151,7 +151,6 @@
                               // var index = parent.layer.getFrameIndex(window.name);
                               // //关闭当前frame
                               // parent.layer.close(index);
-
                               //关闭当前frame
                               x_admin_close();
                           });

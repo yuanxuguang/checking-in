@@ -67,6 +67,14 @@
                     <cite>标签管理</cite>
                 </a>
             </li>
+
+            <li>
+                    <a _href="/clockList">
+                        <i class="iconfont">&#xe6a7;</i>
+                        <cite>考勤</cite>
+                    </a>
+            </li>
+
             <li>
                 <a _href="/schoolList">
                     <i class="iconfont">&#xe6a7;</i>

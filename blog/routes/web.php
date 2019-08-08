@@ -86,6 +86,9 @@ Route::post('/labelEditInsert','LabelController@editInsert'); //修改插入
 Route::get('/labelDelete','LabelController@delete'); //删除合约
 Route::get('/getLevel2Label','LabelController@getLevel2Label');
 
+//考勤
+Route::get('/clockList','ClockController@list');//列表
+Route::get('/video','ClockController@video');//打卡视频
 });
 
 //API
@@ -96,6 +99,7 @@ Route::get('/getJob','ApiController@getJob');//员工注册-获取雇主创建�
 Route::post('/apiLogin','ApiController@login'); //登陆
 Route::post('/apiPwdVerify','ApiController@apiPwdVerify');//密码验证
 Route::post('/apiClockCamera','ApiController@apiClockCamera');//上班打卡-摄像
+Route::post('/clockFace','ApiController@clockFace');//上班打卡-人脸
 Route::post('/officeClockOut','ApiController@officeClockOut');//上班-下班打卡
 Route::post('/clockRecord','ApiController@clockRecord');//打卡记录
 Route::post('/stationClock','ApiController@stationClock');//上班打卡-工位打卡
