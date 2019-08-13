@@ -37,5 +37,13 @@ class VerifyCsrfToken extends Middleware
         '/stationClock',
         '/registerStaff',
         '/clockFace',
+        '/safetyEquip',
+        '/confirmContract1',
+        '/confirmContract2',
+        '/confirmContract3',
+        '/textRecord',
+        '/messageRecord',
+        '/imgRecord',
+        '/videoRecord',
     ];
 }

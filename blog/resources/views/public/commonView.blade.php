@@ -69,10 +69,25 @@
             </li>
 
             <li>
-                    <a _href="/clockList">
-                        <i class="iconfont">&#xe6a7;</i>
-                        <cite>考勤</cite>
-                    </a>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe723;</i>
+                    <cite>考勤</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/clockList">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>上班打卡</cite>
+                        </a>
+                    </li >
+                    <li>
+                        <a _href="/stationClockList">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>工位打卡</cite>
+                        </a>
+                    </li >
+                </ul>
             </li>
 
             <li>

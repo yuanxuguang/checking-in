@@ -87,18 +87,24 @@ Route::get('/labelDelete','LabelController@delete'); //删除合约
 Route::get('/getLevel2Label','LabelController@getLevel2Label');
 
 //考勤
-Route::get('/clockList','ClockController@list');//列表
+Route::get('/clockList','ClockController@list');//上班打卡列表
+Route::get('/stationClockList','ClockController@stationList');//工位打卡列表
 Route::get('/video','ClockController@video');//打卡视频
+Route::get('/safetyEquipList','ClockController@safetyEquipList');//安全装备
 });
 
 //API
-Route::post('/registerStaff','ApiController@registerStaff');
+Route::post('/registerStaff','ApiController@registerStaff');//员工注册
+Route::post('/confirmContract1','ApiController@confirmContract1');//确认合约获取主合约列表
+Route::post('/confirmContract2','ApiController@confirmContract2');//确认合约根据主合约获取子合约
+Route::post('/confirmContract3','ApiController@confirmContract3');//确认合约提交数据
 //员工端
 Route::get('/getEmployer','ApiController@getEmployer');//员工注册-模糊搜索获取雇主
 Route::get('/getJob','ApiController@getJob');//员工注册-获取雇主创建的职位
 Route::post('/apiLogin','ApiController@login'); //登陆
 Route::post('/apiPwdVerify','ApiController@apiPwdVerify');//密码验证
 Route::post('/apiClockCamera','ApiController@apiClockCamera');//上班打卡-摄像
+Route::post('/safetyEquip','ApiController@safetyEquip');//安全装备
 Route::post('/clockFace','ApiController@clockFace');//上班打卡-人脸
 Route::post('/officeClockOut','ApiController@officeClockOut');//上班-下班打卡
 Route::post('/clockRecord','ApiController@clockRecord');//打卡记录
@@ -106,3 +112,10 @@ Route::post('/stationClock','ApiController@stationClock');//上班打卡-工位�
 
 //管理端
 Route::post('/indexing','ApiController@indexing');//打卡记录
+Route::post('/textRecord','ApiController@textRecord');//文字记录
+Route::post('/messageRecord','ApiController@messageRecord');//通讯记录
+Route::post('/imgRecord','ApiController@imgRecord');//图片记录
+Route::post('/videoRecord','ApiController@videoRecord');//摄像记录
+Route::get('/recordList','ApiController@recordList');//历史记录
+Route::get('/recordDetail','ApiController@recordDetail');//历史记录
+

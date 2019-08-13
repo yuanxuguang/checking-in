@@ -61,7 +61,7 @@ class ApiController extends Controller
             'eid' => 'required',
             'company_num' => 'required',
             'country_type' => 'required',
-            'phone_num' => 'required',
+            'phone_num' => 'required|unique:staff',
             'sex' => 'required',
             'name1' => 'required',
             'name2' => 'required',
@@ -74,7 +74,9 @@ class ApiController extends Controller
             'safety_problem3' => 'required',
             'j_id' => 'required',
             'technical_merit' => 'required',
-            ]);
+            ],[
+             'phone_num.unique' => '该手机号已被注册'
+        ]);
         $data = request()->all();
         if($validator->fails()){
             return response()->json(['message' => $validator->errors(),'code' => 400,'data' => '']);
@@ -249,6 +251,45 @@ class ApiController extends Controller
         return json_encode($json,true);
     }
 
+    //安全装备
+    public function safetyEquip(){
+        $validator = Validator::make(request()->all(),[
+            'sid' => 'required',
+            'quip_video' => 'required',
+            'eid' => 'required',
+        ],[
+            'sid.required' => '员工id不能为空',
+            'video.required' => '装备摄像不能为空',
+            'eid.required' => 'eid不能为空',
+        ]);
+        if($validator->fails()){
+            return response()->json(['message' => $validator->errors(),'code' => 400,'data' => '']);
+        }
+        $data = request()->all();
+        $data['start_time'] = date('Y-m-d H:i:s',time());
+        $data['date'] = date('Y-m-d',time());
+        $data['type'] = '3';
+        if(request()->hasFile('quip_video')){
+            $path = Storage::putFileAs('/public/c_video',request('quip_video'),date('Ymd').'_'.date('His').'.mp4');
+            $path = str_replace('public','/storage',$path);
+            $data['quip_video'] = $path;
+        }
+        $bool = DB::table('clock')->insert($data);
+        if($bool){
+            $message = 'success';
+            $code = 200;
+            $data = [];
+        }else{
+            $message = 'error';
+            $code = 400;
+            $data = [];
+        }
+        $json['message'] = $message;
+        $json['code'] = $code;
+        $json['data'] = $data;
+        return json_encode($json,true);
+    }
+
     //上班打卡-人脸识别
     public function clockFace(){
         $validator = Validator::make(request()->all(),[
@@ -265,7 +306,7 @@ class ApiController extends Controller
         $data['date'] = date('Y-m-d',time());
         $data['type'] = '1';
         if(request()->hasFile('face_img')){
-            $path = Storage::putFileAs('/public/c_face_img',request('video'),date('Ymd').'_'.date('His').'.png');
+            $path = Storage::putFileAs('/public/c_face_img',request('face_img'),date('Ymd').'_'.date('His').'.png');
             $path = str_replace('public','/storage',$path);
             $data['face_img'] = $path;
         }
@@ -316,6 +357,7 @@ class ApiController extends Controller
         $data['start_time'] = date('Y-m-d H:i:s',time());
         $data['date'] = date('Y-m-d',time());
         $data['type'] = '2';
+        $data['s_type'] = '1';
         unset($data['code_GPS']);
         $bool = DB::table('clock')->insert($data);
         if($bool){
@@ -428,16 +470,86 @@ class ApiController extends Controller
 
 
     //管理端api
-    //确认合约
-    public function confirmContract(){
+    //确认合约-获取主合约
+    public function confirmContract1(){
         $validator = Validator::make(request()->all(),[
-            'sid' => 'required|numeric',
             'eid' => 'required|numeric',
         ]);
         if($validator->fails()){
             return response()->json(['message' => $validator->errors(),'code' => 400,'data' => '']);
         }
-        $contracts = DB::table('contract')->where('eid',request('eid'))->get();
+        $contracts = DB::table('contract')->where('eid',request('eid'))->where('c_type','1')->select('id','eid','c_name')->get();
+        if(!$contracts->isEmpty()){
+            $message = 'success';
+            $code = 200;
+            $data = $contracts;
+        }elseif($contracts->isEmpty()){
+            $message = '没有数据';
+            $code = 200;
+            $data = [];
+        }else{
+            $message = 'error';
+            $code = 400;
+            $data = [];
+        }
+        $json['message'] = $message;
+        $json['code'] = $code;
+        $json['data'] = $data;
+        return json_encode($json,true);
+    }
+
+    //确认合约-根据主合约获取子合约
+    public function confirmContract2(){
+        $validator = Validator::make(request()->all(),[
+            'cid' => 'required|numeric',
+        ]);
+        if($validator->fails()){
+            return response()->json(['message' => $validator->errors(),'code' => 400,'data' => '']);
+        }
+        $contracts = DB::table('contract')->where('c_type','2')->where('up_contract_id',request('cid'))->select('id','c_name')->get();
+        if(!$contracts->isEmpty()){
+            $message = 'success';
+            $code = 200;
+            $data = $contracts;
+        }elseif($contracts->isEmpty()){
+            $message = '没有数据';
+            $code = 200;
+            $data = [];
+        }else{
+            $message = 'error';
+            $code = 400;
+            $data = [];
+        }
+        $json['message'] = $message;
+        $json['code'] = $code;
+        $json['data'] = $data;
+        return json_encode($json,true);
+    }
+
+    //确认合约-更新员工合约
+    public function confirmContract3(){
+        $validator = Validator::make(request()->all(),[
+            'sid' => 'required|numeric',
+            'c_cid' => 'required|numeric',
+            'c_c_type' => 'required',
+        ]);
+        if($validator->fails()){
+            return response()->json(['message' => $validator->errors(),'code' => 400,'data' => '']);
+        }
+        $bool = DB::table('staff')->where('id',request('sid'))->update(['c_id'=>request('c_cid'),'c_c_type'=>request('c_c_type')]);
+        if($bool){
+            $message = 'success';
+            $code = 200;
+            $data = [];
+        }else{
+            $message = 'error';
+            $code = 400;
+            $data = [];
+        }
+        $json['message'] = $message;
+        $json['code'] = $code;
+        $json['data'] = $data;
+        return json_encode($json,true);
     }
 
     //获取索引
@@ -468,7 +580,315 @@ class ApiController extends Controller
         return json_encode($json,true);
     }
 
-    /**
+    //文字记录
+    public function textRecord(){
+        $validator = Validator::make(request()->all(),[
+            'eid'  => 'required|numeric',
+            'sid'  => 'required|numeric',
+            'cid'  => 'required|numeric',
+            'type' => 'required',
+            'text' => 'required',
+        ]);
+        if($validator->fails()){
+            return response()->json(['message' => $validator->errors(),'code' => 400,'data' => '']);
+        }
+        $data = request()->all();
+        $data['r_time'] = date('Y-m-d H:i:s',time());
+        $bool = DB::table('record')->insert($data);
+        if($bool){
+            $message = 'success';
+            $code = 200;
+            $data = [];
+        }else{
+            $message = 'error';
+            $code = 400;
+            $data = [];
+        }
+        $json['message'] = $message;
+        $json['code'] = $code;
+        $json['data'] = $data;
+        return json_encode($json,true);
+    }
+
+    //通讯记录
+    public function messageRecord(){
+        $validator = Validator::make(request()->all(),[
+            'eid'  => 'required|numeric',
+            'sid'  => 'required|numeric',
+            'receiver' => 'required',
+            'cid'  => 'required|numeric',
+            'text' => 'required',
+            'title'=> 'required'
+        ]);
+        if($validator->fails()){
+            return response()->json(['message' => $validator->errors(),'code' => 400,'data' => '']);
+        }
+        $data = request()->all();
+        $data['type'] = '2';
+        $data['r_time'] = date('Y-m-d H:i:s',time());
+        $bool = DB::table('record')->insert($data);
+        if($bool){
+            $message = 'success';
+            $code = 200;
+            $data = [];
+        }else{
+            $message = 'error';
+            $code = 400;
+            $data = [];
+        }
+        $json['message'] = $message;
+        $json['code'] = $code;
+        $json['data'] = $data;
+        return json_encode($json,true);
+    }
+
+    //图片记录
+    public function imgRecord(){
+        $validator = Validator::make(request()->all(),[
+            'eid'  => 'required|numeric',
+            'sid'  => 'required|numeric',
+            'cid'  => 'required|numeric',
+            'type' => 'required',
+            'coordinate' => 'required'
+        ]);
+        if($validator->fails()){
+            return response()->json(['message' => $validator->errors(),'code' => 400,'data' => '']);
+        }
+        $data['eid'] = request('eid');
+        $data['sid'] = request('sid');
+        $data['cid'] = request('cid');
+        $data['coordinate'] =request('coordinate');
+        $data['type'] = '3';
+        if(request('l1')){
+            if(request('l2')){
+                if(request('l3')){
+                    if(request('l4')){
+                        if(request('l5')){
+                            $data['l5'] = request('l5');
+                        }
+                        $data['l4'] = request('l4');
+                    }
+                    $data['l3'] = request('l3');
+                }
+                $data['l2'] = request('l2');
+            }
+            $data['l1'] = request('l1');
+        }
+        if(request('type') == 3){
+            foreach(request()->all() as $key => $val){
+                if(strpos($key,'img') !== false){
+                    $picture[] = request()->all()[$key];
+                }
+            }
+            if(isset($picture)){
+                foreach($picture as $k=>$f){
+                    $paths[] = $this->uploadImg($picture[$k],'img','img');
+                }
+                $data['img'] = json_encode($paths);
+            }else{
+                $json['code'] = 400;
+                $json['message'] = "图片未上传";
+                return json_encode($json);
+            }
+        }
+        $data['r_time'] = date('Y-m-d H:i:s',time());
+        $bool = DB::table('record')->insert($data);
+        if($bool){
+            $message = 'success';
+            $code = 200;
+            $data = [];
+        }else{
+            $message = 'error';
+            $code = 400;
+            $data = [];
+        }
+        $json['message'] = $message;
+        $json['code'] = $code;
+        $json['data'] = $data;
+        return json_encode($json,true);
+    }
+
+    public function videoRecord(){
+        $validator = Validator::make(request()->all(),[
+            'eid'  => 'required|numeric',
+            'sid'  => 'required|numeric',
+            'cid'  => 'required|numeric',
+            'type' => 'required',
+            'coordinate' => 'required'
+        ]);
+        if($validator->fails()){
+            return response()->json(['message' => $validator->errors(),'code' => 400,'data' => '']);
+        }
+        $data['eid'] = request('eid');
+        $data['sid'] = request('sid');
+        $data['cid'] = request('cid');
+        $data['coordinate'] =request('coordinate');
+        $data['type'] = '4';
+        if(request('l1')){
+            if(request('l2')){
+                if(request('l3')){
+                    if(request('l4')){
+                        if(request('l5')){
+                            $data['l5'] = request('l5');
+                        }
+                        $data['l4'] = request('l4');
+                    }
+                    $data['l3'] = request('l3');
+                }
+                $data['l2'] = request('l2');
+            }
+            $data['l1'] = request('l1');
+        }
+        if(request('type') == 4){
+            foreach(request()->all() as $key => $val){
+                if(strpos($key,'video') !== false){
+                    $picture[] = request()->all()[$key];
+                }
+            }
+            if(isset($picture)){
+                foreach($picture as $k=>$f){
+                    $paths[] = $this->uploadImg($picture[$k],'video','video');
+                }
+                $data['video'] = json_encode($paths);
+            }else{
+                $json['code'] = 400;
+                $json['video'] = "视频未上传";
+                return json_encode($json);
+            }
+        }
+        $data['r_time'] = date('Y-m-d H:i:s',time());
+        $bool = DB::table('record')->insert($data);
+        if($bool){
+            $message = 'success';
+            $code = 200;
+            $data = [];
+        }else{
+            $message = 'error';
+            $code = 400;
+            $data = [];
+        }
+        $json['message'] = $message;
+        $json['code'] = $code;
+        $json['data'] = $data;
+        return json_encode($json,true);
+    }
+
+    //历史记录
+    public function recordList(){
+        $validator = Validator::make(request()->all(),[
+            'sid'  => 'required|numeric',
+            'number' => 'required|numeric',
+            'page' => 'required|numeric',
+        ]);
+        if($validator->fails()){
+            return response()->json(['message' => $validator->errors(),'code' => 400,'data' => '']);
+        }
+        $number = request('number');
+        $page = request('page');
+        $total = DB::table('record')
+            ->where('sid',request('sid'))
+            ->limit(45)->get();
+        $totalPage = ceil(count($total)/$number);
+
+        if(request('cid')){
+            if(request('r_time')){
+                $s_time = date('Y-m-d H:i:s',request('r_time'));
+                $res = DB::table('record as a')
+                    ->join('contract as b','a.cid','=','b.id')
+                    ->where('a.sid',request('sid'))
+                    ->where('a.cid',request('cid'))
+                    ->where('a.r_time','>',$s_time)
+                    ->offset($number*$page)
+                    ->orderby('r_time','desc')
+                    ->limit($number)
+                    ->select('a.*','b.c_name')
+                    ->get();
+            }else{
+                $res = DB::table('record as a')
+                    ->join('contract as b','a.cid','=','b.id')
+                    ->where('a.sid',request('sid'))
+                    ->where('a.cid',request('cid'))
+                    ->offset($number*$page)
+                    ->orderby('r_time','desc')
+                    ->limit($number)
+                    ->select('a.*','b.c_name')
+                    ->get();
+            }
+        }else{
+            if(request('r_time')){
+                $s_time = date('Y-m-d H:i:s',request('r_time'));
+                $res = DB::table('record as a')
+                    ->join('contract as b','a.cid','=','b.id')
+                    ->where('a.sid',request('sid'))
+                    ->where('a.r_time','>',$s_time)
+                    ->offset($number*$page)
+                    ->orderby('r_time','desc')
+                    ->limit($number)
+                    ->select('a.*','b.c_name')
+                    ->get();
+            }else{
+                $res = DB::table('record as a')
+                    ->join('contract as b','a.cid','=','b.id')
+                    ->where('a.sid',request('sid'))
+                    ->offset($number*$page)
+                    ->orderby('r_time','desc')
+                    ->limit($number)
+                    ->select('a.*','b.c_name')
+                    ->get();
+            }
+        }
+
+        foreach($res as $k=>$v){
+            $res[$k]->img = json_decode($v->img);
+        }
+        foreach($res as $k=>$v){
+            $res[$k]->video = json_decode($v->video);
+        }
+
+        if(!$res->isEmpty()){
+            $json['code'] = 200;
+            $json['message'] = "success";
+            $json['totalPage'] = $totalPage;
+            $json['page'] = $page;
+            $json['data'] = $res;
+        }elseif($res->isEmpty()){
+            $json['code'] = 200;
+            $json['message'] = "没有数据";
+            $json['data'] = [];
+        }else{
+            $json['code'] = 201;
+            $json['message'] = "error";
+        }
+        return json_encode($json,true);
+//        $list = DB::table('')
+    }
+
+    //记录详情
+    public function recordDetail(){
+        $validator = Validator::make(request()->all(),[
+            'lid'  => 'required',
+        ]);
+        if($validator->fails()){
+            return response()->json(['message' => $validator->errors(),'code' => 400,'data' => '']);
+        }
+        $record = DB::table('record')->where('id',request('lid'))->first();
+        if($record){
+            $message = 'success';
+            $code = 200;
+            $data = $record;
+        }else{
+            $message = 'error';
+            $code = 400;
+            $data = [];
+        }
+        $json['message'] = $message;
+        $json['code'] = $code;
+        $json['data'] = $data;
+        return json_encode($json,true);
+
+    }
+
+  /**
      * 根据起点坐标和终点坐标测距离
      * @param  [array]   $from  [起点坐标(经纬度),例如:array(118.012951,36.810024)]
      * @param  [array]   $to    [终点坐标(经纬度)]
@@ -488,6 +908,24 @@ class ApiController extends Controller
         }
         return round($distance, $decimal);
 
+    }
+
+    //上传图片
+    public function uploadImg($file,$folder,$file_prefix){
+        // 构建存储的文件夹规则，值如：uploads/images/video/201709/21/
+        // 文件夹切割能让查找效率更高。
+        $folder_name = "uploads/$folder/" . date("Ymd", time());
+
+        // 文件具体存储的物理路径，`public_path()` 获取的是 `public` 文件夹的物理路径。
+        // 值如：/home/vagrant/Code/changan/public/uploads/video/201709/21/
+        $upload_path = public_path() . '/' . $folder_name;
+        // 获取文件的后缀名
+        $extension = $file->getClientOriginalExtension();
+        //给文件取名
+        $file_name = $file_prefix.'_'.date('Y-m-d_His',time()).'_'.str_random(5).'.'.$extension;
+        // 将文件到我们的目标存储路径中
+        $file->move($upload_path,$file_name);
+        return ["path" =>  "/$folder_name/$file_name"];
     }
 
 

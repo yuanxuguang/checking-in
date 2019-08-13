@@ -18,9 +18,7 @@ class EmployerController extends Controller
                 $where_phone = 0;
                 $where_name = $request['condition'];
             }
-
         }
-
         if($request['employerType'] === '1'){
             $where2 = '1';
         }else if($request['employerType'] === '2'){

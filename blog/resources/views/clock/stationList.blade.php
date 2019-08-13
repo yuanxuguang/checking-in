@@ -5,33 +5,30 @@
   <body>
     <div class="x-nav">
       <span class="layui-breadcrumb">
-
+      <a href="/clockList">上班打卡</a>
+      <a>
+        <cite>工位打卡</cite></a>
       </span>
       <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
         <i class="layui-icon" style="line-height:30px">ဂ</i></a>
     </div>
     <div class="x-body">
       <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so" action="/clockList">
+        <form class="layui-form layui-col-md12 x-so" action="/contractList">
             {{--<img src="{{asset('storage/c_img/20190722_134132.png')}}" alt="">--}}
-          <input class="layui-input" placeholder="开始日" name="start" id="start">
-          <input class="layui-input" placeholder="截止日" name="end" id="end">
-          <input type="text" name="condition"  placeholder="手机号" autocomplete="off" class="layui-input">
+          {{--<input class="layui-input" placeholder="开始日" name="start" id="start">--}}
+          {{--<input class="layui-input" placeholder="截止日" name="end" id="end">--}}
           <div class="layui-input-inline">
-          <select name="c_type">
-            <option value="0">全部</option>
-          <option value="1">主合约</option>
-          <option value="2">子合约</option>
+          <select name="s_type">
+            <option value="0">类型</option>
+            <option value="1">员工扫描</option>
+            <option value="2">管理员扫描</option>
           </select>
           </div>
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
-      <xblock>
-        {{--<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>--}}
-        <button class="layui-btn" onclick="x_admin_show('添加用户','/contractAdd','600','800')"><i class="layui-icon"></i>添加</button>
-        {{--<span class="x-right" style="line-height:40px">共有数据：88 条</span>--}}
-      </xblock>
+
       <table class="layui-table">
         <thead>
           <tr>
@@ -42,12 +39,10 @@
             <th>手机号</th>
             <th>合约</th>
             <th>上班时间</th>
-            <th>下班时间</th>
-            <th>打卡视频</th>
-            <th>人脸打卡</th>
-            <th>工位打卡</th>
-            <th>安全装备</th>
-          </tr>
+            <th>类型</th>
+            <th>状态</th>
+            <th>位置</th>
+            </tr>
         </thead>
         <tbody>
           @foreach($lists as $l)
@@ -56,13 +51,9 @@
             <td>{{$l->staff->phone_num}}</td>
             <td></td>
             <td>{{$l->start_time}}</td>
-            <td>{{$l->end_time}}</td>
-            <td>
-              <a class="layui-btn layui-btn-normal layui-btn-mini" onclick="x_admin_show('查看视频','/video?video={{$l->video}}&type=1','600','400')" href="javascript:;">查看</a></td>
-            <td>
-              <a  onclick="x_admin_show('查看图片','/video?video={{$l->face_img}}&type=2','600','400')" class="layui-btn layui-btn-normal layui-btn-mini" href="javascript:;">查看</a></td>
-            <td><a class="layui-btn layui-btn-normal layui-btn-mini" href="/stationClockList?start={{$l->start_time}}&sid={{$l->sid}}">查看</a></td>
-            <td><a class="layui-btn layui-btn-normal layui-btn-mini" href="/safetyEquipList?date={{$l->date}}&sid={{$l->sid}}">查看</a></td>
+            <td>{{$l->s_type}}</td>
+            <td>成功</td>
+            <td>{{$l->coordinate}}</td>
             {{--<td class="td-manage">--}}
               {{--<a title="编辑"  onclick="x_admin_show('编辑','/contractEdit/{{$l->id}}',600,500)" href="javascript:;">--}}
                 {{--<i class="layui-icon">&#xe642;</i>--}}

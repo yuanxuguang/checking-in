@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class clock extends Model
+class Clock extends Model
 {
     //
     protected $table = 'clock';
