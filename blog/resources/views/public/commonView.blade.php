@@ -109,6 +109,12 @@
                 </a>
             </li>
             <li>
+                <a _href="/adminRecordList">
+                    <i class="iconfont">&#xe6a7;</i>
+                    <cite>进度管理</cite>
+                </a>
+            </li>
+            <li>
                 <a _href="/setDistance">
                     <i class="iconfont">&#xe6a7;</i>
                     <cite>设置</cite>

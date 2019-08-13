@@ -91,6 +91,12 @@ Route::get('/clockList','ClockController@list');//上班打卡列表
 Route::get('/stationClockList','ClockController@stationList');//工位打卡列表
 Route::get('/video','ClockController@video');//打卡视频
 Route::get('/safetyEquipList','ClockController@safetyEquipList');//安全装备
+
+//进度管理
+Route::get('/adminRecordList','RecordController@list');//进度管理列表
+Route::get('/recordText','RecordController@recordText');//记录文字
+Route::get('/record','RecordController@record');//记录图片或摄像
+//
 });
 
 //API

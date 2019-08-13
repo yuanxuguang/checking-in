@@ -5,10 +5,10 @@
   <body>
     <div class="x-nav">
       <span class="layui-breadcrumb">
-        <a href="">首页</a>
-        <a href="">演示</a>
+        {{--<a href="">首页</a>--}}
+        {{--<a href="">演示</a>--}}
         <a>
-          <cite>导航元素</cite>
+          <cite>进度管理</cite>
         </a>
       </span>
       <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
@@ -16,17 +16,30 @@
     </div>
     <div class="x-body">
       <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so" action="/contractList">
-            {{--<img src="{{asset('storage/c_img/20190722_134132.png')}}" alt="">--}}
+        <form class="layui-form layui-col-md12 x-so" action="/adminRecordList">
+          {{--<img src="{{asset('storage/c_img/20190722_134132.png')}}" alt="">--}}
           {{--<input class="layui-input" placeholder="开始日" name="start" id="start">--}}
           {{--<input class="layui-input" placeholder="截止日" name="end" id="end">--}}
-          <input type="text" name="c_name"  placeholder="合约名称" autocomplete="off" class="layui-input">
+          <input type="text" name="phone_num"  placeholder="手机号" autocomplete="off" class="layui-input">
           <div class="layui-input-inline">
           <select name="c_type">
-            <option value="0">全部</option>
-          <option value="1">主合约</option>
-          <option value="2">子合约</option>
+            <option value="0">选择主合约</option>
           </select>
+
+          </div>
+          <div class="layui-input-inline">
+            <select name="type">
+              <option value="0">选择记录类型</option>
+              <option value="1">文字</option>
+              <option value="2">通讯</option>
+              <option value="3">图片</option>
+              <option value="4">摄像</option>
+            </select>
+          </div>
+          <div class="layui-input-inline">
+            <select name="label">
+              <option value="0">全部索引</option>
+            </select>
           </div>
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
@@ -42,38 +55,45 @@
             {{--<th>--}}
               {{--<div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>--}}
             {{--</th>--}}
-            <th>合约名称</th>
-            <th>地址</th>
-            <th>主/子</th>
-            <th>上一级合约</th>
+            <th>姓名</th>
+            <th>手机号</th>
+            <th>合约</th>
+            <th>索引</th>
+            <th>类型</th>
             <th>时间</th>
-            <th>公司编号</th>
+            <th>位置</th>
             <th >操作</th>
             </tr>
         </thead>
         <tbody>
-          @foreach($contracts as $c)
+          @foreach($lists as $l)
           <tr>
-            <td>{{$c->c_name}}</td>
-            <td>{{$c->c_address}}</td>
-            <td>@if($c->c_type == 1)主@else 子@endif</td>
-            <td>{{$c->up_contract_name}}</td>
-            <td>{{$c->created_at}}</td>
-            <td>{{$c->employer->company_num}}</td>
+            <td>{{$l->staff->name1}}{{$l->staff->name2}}</td>
+            <td>{{$l->staff->phone_num}}</td>
+            <td>{{$l->contract->c_name}}</td>
+            <td>@if($l->l1 != null) {{$l->l1}}
+                     @if($l->l2 != null) =>{{$l->l2}}
+                          @if($l->l3 != null) =>{{$l->l3}}
+                            @if($l->l4 != null) =>{{$l->l4}}
+                              @if($l->l5 != null) =>{{$l->l5}}
+                              @endif
+                            @endif
+                          @endif
+                     @endif
+                 @endif</td>
+            <td>@if($l->type == '1')文字@elseif($l->type == '2')通讯 @elseif($l->type == '3')图片@else 摄像 @endif</td>
+            <td>{{$l->r_time}}</td>
+            <td>{{$l->coordinate}}</td>
             <td class="td-manage">
-              <a title="编辑"  onclick="x_admin_show('编辑','/contractEdit/{{$c->id}}',600,500)" href="javascript:;">
-                <i class="layui-icon">&#xe642;</i>
-              </a>
-              <a title="删除" onclick="member_del(this,'{{$c->id}}')" href="javascript:;">
-                <i class="layui-icon">&#xe640;</i>
-              </a>
+              <a class="layui-btn layui-btn-normal layui-btn-mini" onclick="x_admin_show('查看备注','/recordText?rid={{$l->id}}','600','400')" href="javascript:;">备注</a>
+              <a class="layui-btn layui-btn-normal layui-btn-mini" onclick="x_admin_show('查看','/record?type={{$l->type}}&rid={{$l->id}}','800','400')"  href="javascript:;">查看</a>
             </td>
           </tr>
           @endforeach
         </tbody>
       </table>
       <div class="page">
-        {{$contracts->links()}}
+        {{$lists->links()}}
       </div>
 
     </div>
@@ -101,14 +121,12 @@
                 //发异步把用户状态进行更改
                 $(obj).attr('title','停用')
                 $(obj).find('i').html('&#xe62f;');
-
                 $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
                 layer.msg('已停用!',{icon: 5,time:1000});
 
               }else{
                 $(obj).attr('title','启用')
                 $(obj).find('i').html('&#xe601;');
-
                 $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
                 layer.msg('已启用!',{icon: 5,time:1000});
               }
