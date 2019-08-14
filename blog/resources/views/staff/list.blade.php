@@ -107,8 +107,8 @@
                   <i class="layui-icon layui-btn">启用</i>
                 </a>
               @endif
-              <a title="编辑"  onclick="x_admin_show('编辑','/staffEdit/{{$list->id}}',600,500)" href="javascript:;">
-                <i class="layui-icon">&#xe642;</i>
+              <a title="" class="layui-btn" href="/staffDetail/{{$list->id}}">
+                查看
               </a>
               {{--<a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">--}}
                 {{--<i class="layui-icon">&#xe640;</i>--}}

@@ -76,6 +76,7 @@ Route::post('/staffEditInsert','StaffController@editInsert'); //修改插入
 Route::get('/staffDelete','StaffController@delete'); //删除
 Route::get('/setStaffStatus','StaffController@setStaffStatus'); //更改状态
 Route::get('/staffOutEmployer/{sid}/{eid}','StaffController@staffOutEmployer'); //更改状态
+Route::get('/staffDetail/{sid}','StaffController@staffDetail'); //员工详情
 
 //标签管理
 Route::get('/labelList','LabelController@list'); //列表

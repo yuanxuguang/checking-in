@@ -100,5 +100,13 @@ class StaffController extends Controller
         return ['info'=>$bool];
     }
 
+    public function staffDetail($sid){
+        $staff = Staff::where('id',$sid)->first();
+        //外判雇主
+        $outEmployer = DB::table('employer')->where('id',$staff->out_eid)->select('name')->first();
+
+        return view('staff.edit',compact('staff','outEmployer'));
+    }
+
 
 }
