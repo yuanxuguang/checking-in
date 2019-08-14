@@ -312,6 +312,16 @@ class ApiController extends Controller
         }
 
         //做人脸比对
+        $url = "https://dtplus-cn-shanghai.data.aliyuncs.com/face/verify";
+        $face['image_url_1'] = "http://1.yxg404.top".$data['face_img'];
+        $s_img = DB::table('staff')->where('id',request('sid'))->select('face_img')->first();
+        $face['image_url_2'] = "http://1.yxg404.top".$s_img->face_img;
+        $face['type'] = 0;
+        dd($face);
+        $face = json_encode($face,true);
+        $is_face = $this->curl($url,$face);
+
+        dd($is_face);
         $bool = DB::table('clock')->insert($data);
         if($bool){
             $message = '打卡成功';
@@ -929,4 +939,22 @@ class ApiController extends Controller
     }
 
 
+    public function curl($url,$data,$timeout=5){
+        if($url == '' || $data == '' || $timeout <=0){
+            return false;
+        }
+        $con = curl_init((string)$url);
+        curl_setopt($con, CURLOPT_HEADER, false);
+        curl_setopt($con, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($con, CURLOPT_POST,true);
+        curl_setopt($con, CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($con, CURLOPT_TIMEOUT,(int)$timeout);
+        $output = curl_exec($con);
+        if($output === FALSE ){
+            echo "CURL Error:".curl_error($con);
+        }
+        // 4. 释放curl句柄
+        curl_close($con);
+        return $output;
+    }
 }
