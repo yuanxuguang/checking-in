@@ -985,6 +985,8 @@ class ApiController extends Controller
                 },
                 array_keys($options['http']['header']),
                 $options['http']['header']));
+        dd($options['http']['header']);
+        return $options['http']['header'];
         $context = stream_context_create($options);
         $file = file_get_contents($url, false, $context );
 //        $ifno = $this->curl($url,$context);
