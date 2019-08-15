@@ -32,7 +32,7 @@ class ContractController extends Controller
         $c = request('c');
         //外判雇主列表
         $out_employers = DB::table('employer')->where('id',session('eid'))->get();
-        $up_contracts = DB::table('contract')->where('c_type',"1")->get();
+        $up_contracts = DB::table('contract')->where('c_type',"1")->where('eid',session('eid'))->get();
         return view('contract.add',compact('out_employers','up_contracts','api_addr','c'));
     }
 

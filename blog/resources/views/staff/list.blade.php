@@ -6,20 +6,31 @@
   <meta name="renderer" content="webkit|ie-comp|ie-stand">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8 />
-    <meta http-equiv="Cache-Control  />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
   <link rel="stylesheet" href="/c/css/font.css">
   <link rel="stylesheet" href="/c/css/xadmin.css">
   <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript"src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
   <script src="/c/lib/layui/layui.js" charset="utf-8"></script>
 
+  <style>
+    #WidgetFloaterPanels{
+      display:none !important;
+    }
+    #WidgetLogoPanel{
+      display:none !important;
+    }
+    .layui-layer-iframe{
+      z-index: 19891019; width: 600px; height: 400px; top: 1px !important; left: 510px;
+    }
+
+  </style>
   <script type="text/javascript" src="/c/js/xadmin.js"></script>
   <script type="text/javascript" src="/c/js/cookie.js"></script>
   <script>
     // 是否开启刷新记忆tab功能
     // var is_remember = false;
   </script>
-
 </head>
   
   <body>
@@ -41,12 +52,9 @@
           {{--<input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">--}}
           <input type="text" name="condition"  placeholder="用户名，手机" autocomplete="off" class="layui-input">
           <div class="layui-input-inline">
-          <select name="role" id="">
-            <option value="0">角色类型</option>
+          <select name="s_type" id="">
             <option value="1">前线人员</option>
-            <option value="2">中层人员</option>
-            <option value="3">高层人员</option>
-            <option value="4">检视人员</option>
+            <option value="2">检视人员</option>
           </select>
           </div>
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
@@ -54,7 +62,7 @@
       </div>
       <xblock>
         {{--<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>--}}
-        <button class="layui-btn" onclick="x_admin_show('添加用户','/staffAdd',600,500)"><i class="layui-icon"></i>添加</button>
+        {{--<button class="layui-btn" onclick="x_admin_show('添加用户','/staffAdd',600,500)"><i class="layui-icon"></i>添加</button>--}}
         {{--<span class="x-right" style="line-height:40px">共有数据：88 条</span>--}}
       </xblock>
       <table class="layui-table x-admin">

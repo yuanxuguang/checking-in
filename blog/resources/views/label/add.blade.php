@@ -106,7 +106,7 @@
                     </div>
             </div>
 
-            @if($up1_labels)
+            @if(isset($up1_labels))
             <div class="layui-form-item employer_type label_level level1" >
                 <label for="username" class="layui-form-label">
                     <span class="x-red">*</span>1级

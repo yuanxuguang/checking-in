@@ -29,19 +29,20 @@ class StaffController extends Controller
                             return $query->where('name',$where_name);
                         })
                     ->where('role',$request['role'])
+                    ->where('eid',session('eid'))
                     ->paginate(10);
         }elseif($request['condition'] && $request['role'] == 0){
             $lists = Staff::when($where_phone,function($query) use ($where_phone){
                         return $query->where('phone_num',$where_phone);
                         },function($query) use ($where_name){ return $query->where('name',$where_name); })
+                    ->where('eid',session('eid'))
                     ->paginate(10);
 
-
-        }elseif(!$request['condition'] && $request['role'] != 0){
-            $lists = Staff::where('role',$request['role'])->paginate(10);
+        }elseif(!$request['condition'] && $request['s_type'] != 0){
+            $lists = Staff::where('s_type',$request['s_type'])->where('eid',session('eid'))->paginate(10);
 //            dd($lists);
         }else{
-            $lists = Staff::paginate(10);
+            $lists = Staff::where('eid',session('eid'))->paginate(10);
         }
 
 //        $lists = Staff::paginate(10);

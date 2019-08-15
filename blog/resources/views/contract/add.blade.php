@@ -146,6 +146,8 @@
                 $("#getLocation").attr("href","https://apis.map.qq.com/tools/locpicker?search=1&type=0&backurl=http://1.yxg404.top/contractAdd?c=2&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp");
 
             })
+
+
         };
 
         layui.use(['form','layer'], function(){
@@ -178,6 +180,10 @@
 
                 $(".hidden").show();
             });
+
+            if ($('#zi').attr('checked')) {
+                $(".hidden").show();
+            }
           //监听提交
           form.on('submit(add)', function(data){
               var form = new FormData(document.getElementById("data"));

@@ -12,7 +12,7 @@
             </label>
             <div class="layui-input-inline">
                 <input type="text" id="L_email" name="office_distance" required="" lay-verify="name"
-                       autocomplete="off" class="layui-input" value="{{$list->office_distance}}">
+                       autocomplete="off" class="layui-input" value="@if($list) {{$list->office_distance}} @endif">
             </div>
             <div class="layui-form-mid layui-word-aux">
                 <span class="x-red">米</span>
@@ -25,7 +25,7 @@
             </label>
             <div class="layui-input-inline">
                 <input type="text" id="L_username" name="work_distance" required="" lay-verify="job_name"
-                       autocomplete="off" class="layui-input" value="{{$list->work_distance}}">
+                       autocomplete="off" class="layui-input" value="@if($list) {{$list->work_distance}} @endif">
             </div>
             <div class="layui-form-mid layui-word-aux">
                 <span class="x-red">米</span>
@@ -37,7 +37,7 @@
             </label>
             <div class="layui-input-inline">
                 <input type="text" id="L_username" name="refresh_time" required=""
-                    value="{{$list->refresh_time}}"     autocomplete="off" class="layui-input">
+                    value="@if($list) {{$list->refresh_time}} @endif"     autocomplete="off" class="layui-input">
             </div>
             <div class="layui-form-mid layui-word-aux">
                 <span class="x-red">分</span>

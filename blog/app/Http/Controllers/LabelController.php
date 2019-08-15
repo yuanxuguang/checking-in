@@ -30,9 +30,9 @@ class LabelController extends Controller
         $schools = DB::table('school')->where('eid',session('eid'))->get();
         $is_upLabel = DB::table('label')->where('eid',session('eid'))->where('level','1')->count();
         if($is_upLabel){//判断是否有一级,没有直接返回视图
-                $up1_labels = DB::table('label')->where('eid',session('eid'))->where('level','1')->get();
-                return view('label.add',compact('contracts','schools','is_upLabel','up1_labels','api_addr'));
-            }
+           $up1_labels = DB::table('label')->where('eid',session('eid'))->where('level','1')->get();
+           return view('label.add',compact('contracts','schools','is_upLabel','up1_labels','api_addr'));
+        }
         return view('label.add',compact('contracts','schools','is_upLabel','api_addr'));
     }
 
@@ -82,26 +82,26 @@ class LabelController extends Controller
 
     public function edit($lid){
         $api_addr = request()->all();
-        $label = DB::table('label')->where('id',$lid)->first();
+        $label = DB::table('label')->where('id',$lid)->where('eid',session('eid'))->first();
         $contracts = DB::table('contract')->where('eid',session('eid'))->get();
         if($label->level == 2){
-            $up1_Label = DB::table('label')->where('level',1)->get();
+            $up1_Label = DB::table('label')->where('level',1)->where('eid',session('eid'))->get();
             $label->one_label = $label->up_label;
         }else if($label->level == 3){
-            $up1_Label = DB::table('label')->where('level',1)->get();
-            $up2_Label = DB::table('label')->where('id',$label->up_label)->first();
+            $up1_Label = DB::table('label')->where('level',1)->where('eid',session('eid'))->get();
+            $up2_Label = DB::table('label')->where('id',$label->up_label)->where('eid',session('eid'))->first();
             $label->one_label = $up2_Label->up_label;
             return view('label.edit',compact('label','contracts','up1_Label','api_addr','up2_Label'));
         }else if($label->level == 4){
-            $up1_Label = DB::table('label')->where('level',1)->get();
-            $up3_Label = DB::table('label')->where('id',$label->up_label)->first();
-            $up2_Label = DB::table('label')->where('id',$up3_Label->up_label)->first();
+            $up1_Label = DB::table('label')->where('level',1)->where('eid',session('eid'))->get();
+            $up3_Label = DB::table('label')->where('id',$label->up_label)->where('eid',session('eid'))->first();
+            $up2_Label = DB::table('label')->where('id',$up3_Label->up_label)->where('eid',session('eid'))->first();
             $label->one_label = $up2_Label->up_label;
             $label->two_label = $up3_Label->up_label;
 //            dd($up3_label);
             return view('label.edit',compact('label','contracts','up1_Label','api_addr','up2_Label','up3_Label'));
         }else{
-            $up1_Label = DB::table('label')->where('level',1)->get();
+            $up1_Label = DB::table('label')->where('level',1)->where('eid',session('eid'))->get();
             $label->one_label = $label->up_label;
         }
         return view('label.edit',compact('label','contracts','up1_Label','api_addr'));

@@ -44,6 +44,7 @@ class CommonController extends Controller
 
     public function setDistance(){
         $list = DB::table('distance')->where('eid',session('eid'))->first();
+
         return view('distance',compact('list'));
     }
 
